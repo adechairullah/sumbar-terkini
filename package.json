@@ -1,0 +1,46 @@
+{
+  "name": "sumbar-terkini-media-kit",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx tests/e2e/runner.ts",
+    "test:unit": "tsx tests/unit/adapters.test.ts && tsx tests/unit/m3-components.test.ts && tsx tests/unit/admin-panel.test.ts",
+    "test:adversarial": "tsx tests/adversarial/tier5-adversarial.test.ts && tsx tests/adversarial/m4-challenger-stress.test.ts",
+    "test:all": "npm test && npm run test:unit && npm run test:adversarial"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^7.0.3",
+    "@icons-pack/react-simple-icons": "^13.15.1",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.119.0",
+    "canvas-confetti": "^1.9.4",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.4.0",
+    "lucide-react": "^1.70.0",
+    "next": "^15.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.91.0",
+    "simple-icons": "^16.36.0",
+    "tailwind-merge": "^3.0.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0",
+    "@types/node": "^22.13.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.20.0",
+    "eslint-config-next": "^15.2.0",
+    "postcss": "^8.5.0",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.0"
+  }
+}

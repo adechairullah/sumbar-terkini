@@ -1,0 +1,26 @@
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# Next.js build output
+/.next/
+/out/
+/build
+
+# Testing & coverage
+/coverage
+*.tsbuildinfo
+
+# Environment local files
+.env
+.env*.local
+
+# System & IDE files
+.DS_Store
+*.pem
+.vscode/
+.idea/
+
+# Vercel deployment cache
+.vercel

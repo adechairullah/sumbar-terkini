@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root,
+  [data-theme="neo-warm"],
+  .theme-neo-warm {
+    --bg-paper: #FAF8F5;
+    --color-ink: #1E1E1E;
+    --color-mustard: #FFD166;
+    --color-mustard-hover: #F4C44E;
+    --color-coral: #EF476F;
+    --color-coral-hover: #E03660;
+    --color-mint: #06D6A0;
+    --color-mint-hover: #05BF8E;
+    --color-card: #FFFFFF;
+  }
+
+  [data-theme="neo-mint"],
+  .theme-neo-mint {
+    --bg-paper: #E6FBF5;
+    --color-ink: #11221E;
+    --color-mustard: #34D399;
+    --color-mustard-hover: #10B981;
+    --color-coral: #F43F5E;
+    --color-coral-hover: #E11D48;
+    --color-mint: #05C793;
+    --color-mint-hover: #04A67B;
+    --color-card: #FFFFFF;
+  }
+
+  [data-theme="neo-mustard"],
+  .theme-neo-mustard {
+    --bg-paper: #FFFBEA;
+    --color-ink: #1E1A11;
+    --color-mustard: #FFB703;
+    --color-mustard-hover: #E0A002;
+    --color-coral: #E63946;
+    --color-coral-hover: #CC2B37;
+    --color-mint: #06D6A0;
+    --color-mint-hover: #05BF8E;
+    --color-card: #FFFFFF;
+  }
+
+  body {
+    background-color: var(--bg-paper);
+    color: var(--color-ink);
+    font-feature-settings: "rlig" 1, "calt" 1;
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background-color: var(--color-mustard);
+    color: var(--color-ink);
+  }
+
+  button, a, input[type="submit"], input[type="button"], select {
+    cursor: pointer;
+  }
+
+  button:disabled, input:disabled {
+    cursor: not-allowed;
+  }
+}
+
+@layer components {
+  .neo-card {
+    background-color: var(--color-card, #FFFFFF);
+    border: 2px solid var(--color-ink, #1E1E1E);
+    box-shadow: 4px 4px 0px var(--color-ink, #1E1E1E);
+  }
+
+  .neo-card-interactive {
+    background-color: var(--color-card, #FFFFFF);
+    border: 2px solid var(--color-ink, #1E1E1E);
+    box-shadow: 4px 4px 0px var(--color-ink, #1E1E1E);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .neo-card-interactive:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px var(--color-ink, #1E1E1E);
+  }
+
+  .neo-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    border: 2px solid var(--color-ink, #1E1E1E);
+    box-shadow: 4px 4px 0px var(--color-ink, #1E1E1E);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    user-select: none;
+  }
+
+  .neo-button:hover:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px var(--color-ink, #1E1E1E);
+  }
+
+  .neo-button:active:not(:disabled) {
+    transform: translate(4px, 4px);
+    box-shadow: 0px 0px 0px var(--color-ink, #1E1E1E);
+  }
+
+  .neo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: 2px solid var(--color-ink, #1E1E1E);
+    box-shadow: 2px 2px 0px var(--color-ink, #1E1E1E);
+  }
+}

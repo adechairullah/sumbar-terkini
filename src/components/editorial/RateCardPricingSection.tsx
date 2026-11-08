@@ -7,9 +7,9 @@ import {
   CheckCircle2,
   Sparkles,
   ArrowRight,
-  Zap,
   Flame,
   Star,
+  Gift,
 } from 'lucide-react';
 
 interface RateCardPricingSectionProps {
@@ -27,6 +27,52 @@ export function RateCardPricingSection({ onSelectPackage }: RateCardPricingSecti
     }
   };
 
+  const getPackageTheme = (id: string, isPopular?: boolean, isBestValue?: boolean) => {
+    if (isBestValue) {
+      return {
+        cardBg: 'bg-white',
+        borderAccent: 'border-mint',
+        badgeBg: 'bg-mint text-ink',
+        buttonBg: 'bg-mint hover:bg-mint-hover text-ink',
+        hasFreeStory: true,
+      };
+    }
+    if (isPopular) {
+      return {
+        cardBg: 'bg-white',
+        borderAccent: 'border-mustard',
+        badgeBg: 'bg-coral text-ink',
+        buttonBg: 'bg-mustard hover:bg-mustard-hover text-ink',
+        hasFreeStory: true,
+      };
+    }
+    if (id === 'foto-desain') {
+      return {
+        cardBg: 'bg-white',
+        borderAccent: 'border-ink',
+        badgeBg: 'bg-[#FFF8E7] text-ink border-ink/40',
+        buttonBg: 'bg-paper hover:bg-mustard text-ink',
+        hasFreeStory: true,
+      };
+    }
+    if (id === 'video-reels') {
+      return {
+        cardBg: 'bg-white',
+        borderAccent: 'border-ink',
+        badgeBg: 'bg-[#FFEBEF] text-ink border-ink/40',
+        buttonBg: 'bg-paper hover:bg-mustard text-ink',
+        hasFreeStory: true,
+      };
+    }
+    return {
+      cardBg: 'bg-white',
+      borderAccent: 'border-ink',
+      badgeBg: 'bg-paper text-ink border-ink/40',
+      buttonBg: 'bg-paper hover:bg-mustard text-ink',
+      hasFreeStory: false,
+    };
+  };
+
   return (
     <section id="rate-calculator" className="my-12 sm:my-16" aria-labelledby="pricing-heading">
       {/* Section Header */}
@@ -40,7 +86,7 @@ export function RateCardPricingSection({ onSelectPackage }: RateCardPricingSecti
             Tarif & Pilihan Paket Paid Promote
           </h2>
           <p className="text-sm sm:text-base text-ink/80 mt-1 max-w-2xl font-normal">
-            Investasi promosi transparan, terjangkau, dan berdampak tinggi. Seluruh paket video dan foto bebas fitur Collab Post gratis.
+            Investasi promosi transparan, terjangkau, dan berdampak tinggi. Setiap paket promo otomatis sudah include Free 1x Instagram Story 24 Jam!
           </p>
         </div>
 
@@ -52,13 +98,15 @@ export function RateCardPricingSection({ onSelectPackage }: RateCardPricingSecti
       {/* 5 Packages Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {packages.map((pkg) => {
+          const theme = getPackageTheme(pkg.id, pkg.isPopular, pkg.isBestValue);
           const isFeatured = pkg.isPopular || pkg.isBestValue;
+
           return (
             <div
               key={pkg.id}
               className={`neo-card rounded-2xl border-2 border-ink shadow-neo p-6 flex flex-col justify-between transition-transform hover:translate-y-[-2px] relative ${
-                isFeatured ? 'bg-white ring-2 ring-ink ring-offset-2' : 'bg-white'
-              }`}
+                theme.cardBg
+              } ${isFeatured ? 'ring-2 ring-ink ring-offset-2' : ''}`}
             >
               {/* Top Badges */}
               <div>
@@ -74,8 +122,8 @@ export function RateCardPricingSection({ onSelectPackage }: RateCardPricingSecti
                       <span>{pkg.badge || 'Paling Laris'}</span>
                     </span>
                   ) : (
-                    <span className="neo-badge bg-paper text-ink text-[11px] font-mono">
-                      Paket Mandiri
+                    <span className={`neo-badge text-[11px] font-mono ${theme.badgeBg}`}>
+                      {pkg.name}
                     </span>
                   )}
 
@@ -91,16 +139,26 @@ export function RateCardPricingSection({ onSelectPackage }: RateCardPricingSecti
                   {pkg.name}
                 </h3>
 
-                <div className="text-2xl sm:text-3xl font-mono font-black text-ink mb-4">
+                <div className="text-2xl sm:text-3xl font-mono font-black text-ink mb-3">
                   {pkg.priceFormatted}
                 </div>
+
+                {/* Free Story Inclusion Highlight */}
+                {theme.hasFreeStory && (
+                  <div className="mb-4 p-2 rounded-lg bg-mint/30 border border-ink/30 flex items-center gap-1.5 text-xs font-mono font-bold text-ink">
+                    <Gift className="w-3.5 h-3.5 text-ink shrink-0" />
+                    <span>Include Free Instagram Story 24 Jam</span>
+                  </div>
+                )}
 
                 {/* Deliverables List */}
                 <ul className="space-y-2.5 mb-6 text-xs text-ink/90 font-sans">
                   {pkg.deliverables.map((item, idx) => (
                     <li key={idx} className="flex items-start gap-2">
                       <CheckCircle2 className="w-4 h-4 text-ink shrink-0 mt-0.5" />
-                      <span>{item}</span>
+                      <span className={item.includes('BONUS') ? 'font-bold text-ink' : ''}>
+                        {item}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -110,11 +168,7 @@ export function RateCardPricingSection({ onSelectPackage }: RateCardPricingSecti
               <button
                 type="button"
                 onClick={() => handleChoose(pkg.id)}
-                className={`neo-button w-full min-h-[44px] py-2.5 px-4 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-2 border-2 border-ink shadow-neo-sm ${
-                  isFeatured
-                    ? 'bg-mustard hover:bg-mustard-hover text-ink'
-                    : 'bg-paper hover:bg-mustard text-ink'
-                }`}
+                className={`neo-button w-full min-h-[44px] py-2.5 px-4 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-2 border-2 border-ink shadow-neo-sm ${theme.buttonBg}`}
               >
                 <span>Pilih & Hitung Paket</span>
                 <ArrowRight className="w-3.5 h-3.5 text-ink" />

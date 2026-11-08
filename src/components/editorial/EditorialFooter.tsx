@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { MEDIA_KIT_DATA } from '@/data/mediaKitData';
-import { MessageCircle, Mail, Heart } from 'lucide-react';
+import { MessageCircle, Mail, Heart, FileDown } from 'lucide-react';
 
 export function EditorialFooter() {
   const { brand, platforms } = MEDIA_KIT_DATA;
@@ -12,6 +12,7 @@ export function EditorialFooter() {
     { label: 'Platform & Metrik', href: '#socials-heading' },
     { label: 'Rate Card Iklan', href: '#rate-calculator' },
     { label: 'Kalkulator Order', href: '#order-calculator-widget' },
+    { label: 'Portofolio Kolaborasi', href: '#portfolio-showcase' },
     { label: 'Syarat & Ketentuan', href: '#terms-section' },
     { label: 'Kontak Resmi', href: '#contact-hub' },
   ];
@@ -62,6 +63,15 @@ export function EditorialFooter() {
               >
                 <Mail className="w-4 h-4 text-ink" />
                 <span>{brand.email}</span>
+              </a>
+
+              <a
+                href="/media-kit-sumbar-terkini.pdf"
+                download
+                className="neo-button min-h-[44px] py-2 px-3.5 rounded-xl bg-mustard text-ink text-xs font-mono font-bold flex items-center gap-1.5 border-2 border-ink shadow-neo-sm hover:bg-mustard-hover"
+              >
+                <FileDown className="w-4 h-4 text-ink" />
+                <span>Download Media Kit (PDF)</span>
               </a>
             </div>
           </div>

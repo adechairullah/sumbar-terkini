@@ -14,6 +14,7 @@ import {
   CheckCircle2,
   AlertCircle,
   Sparkles,
+  Gift,
 } from 'lucide-react';
 
 interface OrderCalculatorSectionProps {
@@ -48,6 +49,8 @@ export function OrderCalculatorSection({
     if (found) return found;
     return packages[0]!;
   }, [packages, packageId]);
+
+  const isStandaloneStory = activePackage.id === 'ig-story';
 
   // Tomorrow calculation for H-1 rule
   const tomorrowStr = useMemo(() => {
@@ -109,12 +112,19 @@ export function OrderCalculatorSection({
         ? 'Semua Platform (Instagram, TikTok, Facebook)'
         : selectedSinglePlatform;
 
+    const bonusInfo = isStandaloneStory
+      ? 'Paket Mandiri Story'
+      : 'Include Free 1x Instagram Story 24 Jam (Bonus Otomatis)';
+
+    const extraStoryInfo = extraStories > 0 ? `${extraStories}x Tambahan (+Rp${(extraStories * extraStoryPrice).toLocaleString('id-ID')})` : 'Tidak ada tambahan';
+
     const message = `Halo Admin Sumbar Terkini, saya ingin pasang iklan:
 
 - Nama Brand: ${bName}
 - Paket Dipilih: ${activePackage.name} (${activePackage.priceFormatted})
 - Platform Target: ${platformDisplay}
-- Tambahan Opsi Story: ${extraStories > 0 ? `${extraStories}x (+Rp${(extraStories * extraStoryPrice).toLocaleString('id-ID')})` : 'Tidak Ada'}
+- Bonus Story: ${bonusInfo}
+- Extra Story Tambahan: ${extraStoryInfo}
 - Rencana Tanggal Tayang: ${sDate}
 - Estimasi Total Biaya: Rp${totalPrice.toLocaleString('id-ID')}
 - Catatan Tambahan: ${notes.trim() || '-'}
@@ -122,7 +132,7 @@ export function OrderCalculatorSection({
 Mohon konfirmasi ketersediaan slot tayang dan nomor rekening resmi. Terima kasih!`;
 
     return `https://wa.me/${brand.whatsappNumber}?text=${encodeURIComponent(message)}`;
-  }, [brandName, activePackage, selectedSinglePlatform, extraStories, scheduleDate, totalPrice, notes, brand.whatsappNumber]);
+  }, [brandName, activePackage, selectedSinglePlatform, extraStories, scheduleDate, totalPrice, notes, brand.whatsappNumber, isStandaloneStory]);
 
   // Format Email mailto link
   const emailMailtoUrl = useMemo(() => {
@@ -141,7 +151,8 @@ Berikut adalah draf pemesanan iklan promosi kami:
 Nama Brand / Instansi: ${bName}
 Paket Pilihan: ${activePackage.name}
 Platform: ${platformDisplay}
-Tambahan Story: ${extraStories} story
+Bonus: Free 1x Instagram Story (Sudah Termasuk)
+Tambahan Story Ekstra: ${extraStories} story
 Rencana Tanggal Tayang: ${sDate}
 Total Estimasi Biaya: Rp${totalPrice.toLocaleString('id-ID')}
 Catatan: ${notes.trim() || '-'}
@@ -166,7 +177,7 @@ Terima kasih.`;
             Kalkulator Order & Generator WhatsApp
           </h2>
           <p className="text-sm sm:text-base text-ink/80 mt-1 leading-relaxed font-normal">
-            Pilih paket, sesuaikan platform target, tambahkan opsi story, dan klik tombol untuk mengirim format order otomatis langsung ke WhatsApp resmi Sumbar Terkini.
+            Pilih paket promosi Anda. Setiap paket promo otomatis sudah gratis 1x Instagram Story! Klik tombol untuk mengirim format order otomatis langsung ke WhatsApp resmi Sumbar Terkini.
           </p>
         </div>
 
@@ -187,7 +198,7 @@ Terima kasih.`;
                       setPackageId(pkg.id);
                       onSelectPackage?.(pkg.id);
                     }}
-                    className={`min-h-[44px] p-3.5 rounded-xl border-2 text-left transition-all ${
+                    className={`min-h-[48px] p-3.5 rounded-xl border-2 text-left transition-all ${
                       packageId === pkg.id
                         ? 'bg-mustard border-ink shadow-neo-sm font-bold'
                         : 'bg-white border-ink/40 hover:border-ink text-ink'
@@ -235,42 +246,63 @@ Terima kasih.`;
             ) : (
               <div className="p-3.5 rounded-xl bg-mint/40 border-2 border-ink text-xs font-mono text-ink flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-ink shrink-0" />
-                <span>Paket ini otomatis Mirroring tayang di 3 platform sekaligus (IG, TikTok, FB).</span>
+                <span>Paket ini otomatis Mirroring tayang serentak di 3 platform sekaligus (IG, TikTok, FB).</span>
               </div>
             )}
 
-            {/* Step 3: Add-on Counter */}
-            <div className="flex items-center justify-between p-4 rounded-xl bg-white border-2 border-ink">
-              <div>
-                <span className="block text-xs font-mono font-bold text-ink uppercase tracking-wider">
-                  3. Tambahan Instagram Story
-                </span>
-                <span className="text-xs text-ink/70">
-                  +Rp50.000 / story (Aktif 24 jam dengan link)
-                </span>
-              </div>
+            {/* Step 3: Free Story Confirmation + Optional Extra Story */}
+            <div className="p-4 rounded-xl bg-white border-2 border-ink space-y-3">
+              {!isStandaloneStory ? (
+                <div className="p-3 rounded-lg bg-mint/30 border border-ink/30 flex items-center gap-2.5">
+                  <Gift className="w-5 h-5 text-ink shrink-0" />
+                  <div className="text-xs">
+                    <span className="font-bold text-ink block">
+                      Sudah Termasuk 1x Free Instagram Story 24 Jam!
+                    </span>
+                    <span className="text-ink/70 text-[11px]">
+                      Posting feed/reels otomatis kami repost ke Instagram Story gratis dengan stiker tautan aktif.
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-xs text-ink/80 font-mono">
+                  Paket Instagram Story Standalone (Rp50.000 / tayangan 24 jam).
+                </div>
+              )}
 
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => setExtraStories((prev) => Math.max(0, prev - 1))}
-                  disabled={extraStories === 0}
-                  className="w-10 h-10 rounded-lg bg-paper border-2 border-ink flex items-center justify-center text-ink disabled:opacity-40 disabled:cursor-not-allowed hover:bg-mustard shadow-neo-sm transition-colors"
-                  aria-label="Kurangi Story"
-                >
-                  <Minus className="w-4 h-4" />
-                </button>
-                <span className="w-8 text-center font-mono font-black text-base text-ink">
-                  {extraStories}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setExtraStories((prev) => prev + 1)}
-                  className="w-10 h-10 rounded-lg bg-paper border-2 border-ink flex items-center justify-center text-ink hover:bg-mustard shadow-neo-sm transition-colors"
-                  aria-label="Tambah Story"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
+              {/* Optional Extra Story Counter */}
+              <div className="flex items-center justify-between pt-1">
+                <div>
+                  <span className="block text-xs font-mono font-bold text-ink uppercase tracking-wider">
+                    {isStandaloneStory ? 'Jumlah Tayangan Story' : 'Tambah Story Ekstra (Opsional)'}
+                  </span>
+                  <span className="text-[11px] text-ink/70">
+                    +Rp50.000 / story {isStandaloneStory ? '' : 'di luar 1x bonus gratis'}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setExtraStories((prev) => Math.max(0, prev - 1))}
+                    disabled={extraStories === 0}
+                    className="w-10 h-10 rounded-lg bg-paper border-2 border-ink flex items-center justify-center text-ink disabled:opacity-40 disabled:cursor-not-allowed hover:bg-mustard shadow-neo-sm transition-colors"
+                    aria-label="Kurangi Story"
+                  >
+                    <Minus className="w-4 h-4" />
+                  </button>
+                  <span className="w-8 text-center font-mono font-black text-base text-ink">
+                    {extraStories}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setExtraStories((prev) => prev + 1)}
+                    className="w-10 h-10 rounded-lg bg-paper border-2 border-ink flex items-center justify-center text-ink hover:bg-mustard shadow-neo-sm transition-colors"
+                    aria-label="Tambah Story"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -355,9 +387,15 @@ Terima kasih.`;
                     : selectedSinglePlatform}
                 </span>
               </div>
+              <div className="flex items-center justify-between pb-2 border-b border-ink/10">
+                <span className="text-ink/80">Bonus Story:</span>
+                <span className="font-bold text-ink text-right">
+                  {isStandaloneStory ? 'Tidak Ada' : 'FREE 1x Story (24 Jam)'}
+                </span>
+              </div>
               {extraStories > 0 && (
                 <div className="flex items-center justify-between pb-2 border-b border-ink/10">
-                  <span className="text-ink/80">Extra Story ({extraStories}x):</span>
+                  <span className="text-ink/80">Story Ekstra ({extraStories}x):</span>
                   <span className="font-bold text-ink">
                     +Rp{(extraStories * extraStoryPrice).toLocaleString('id-ID')}
                   </span>
@@ -389,7 +427,7 @@ Terima kasih.`;
                 Rp{totalPrice.toLocaleString('id-ID')}
               </div>
               <p className="text-[11px] text-ink/70 mt-1 font-mono">
-                Bebas Collab Post tanpa biaya tambahan.
+                Bebas Collab Post & include Free Story tanpa biaya tambahan.
               </p>
             </div>
 

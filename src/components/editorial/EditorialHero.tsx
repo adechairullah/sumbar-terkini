@@ -12,6 +12,7 @@ import {
   ShieldCheck,
   Zap,
   MapPin,
+  Gift,
 } from 'lucide-react';
 import { getDynamicSlotText } from '@/lib/utils/dates';
 import { VisitorReaction } from '@/types';
@@ -31,7 +32,7 @@ export function EditorialHero({ reactions = [] }: EditorialHeroProps) {
         <div className="flex items-center gap-2">
           <span className="neo-badge bg-mustard text-ink text-xs font-mono font-bold flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-ink" />
-            <span>Portal Media Terverifikasi</span>
+            <span>Portal Media Terverifikasi 2026</span>
           </span>
           <div className="hidden sm:flex items-center gap-1.5 text-xs font-mono font-medium text-ink/70">
             <MapPin className="w-3.5 h-3.5 text-ink" />
@@ -92,17 +93,32 @@ export function EditorialHero({ reactions = [] }: EditorialHeroProps) {
             {brand.description}
           </p>
 
+          {/* Special Free Story Promotion Banner */}
+          <div className="p-3.5 sm:p-4 rounded-xl bg-mint/40 border-2 border-ink shadow-neo-sm flex items-center justify-center lg:justify-start gap-3">
+            <div className="w-9 h-9 rounded-lg bg-mint border-2 border-ink flex items-center justify-center text-ink shrink-0">
+              <Gift className="w-5 h-5 text-ink" />
+            </div>
+            <div className="text-left">
+              <div className="text-xs font-mono font-black text-ink uppercase tracking-wide">
+                Garansi Ekstra: Free 1x Instagram Story 24 Jam
+              </div>
+              <div className="text-[11px] text-ink/80 font-sans">
+                Setiap pemesanan promosi (Foto / Reels / Combo / Langganan) otomatis sudah include 1x Instagram Story dengan stiker link aktif tanpa biaya tambahan!
+              </div>
+            </div>
+          </div>
+
           {/* Trust Highlights Badges */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-            <div className="p-3.5 rounded-xl bg-paper border-2 border-ink flex items-center justify-center lg:justify-start gap-2.5 shadow-neo-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+            <div className="p-3.5 rounded-xl bg-[#FFEBEF] border-2 border-ink flex items-center justify-center lg:justify-start gap-2.5 shadow-neo-sm">
               <ShieldCheck className="w-4 h-4 text-ink shrink-0" />
               <span className="text-xs font-bold text-ink font-mono">100% Organik & Anti-Bot</span>
             </div>
-            <div className="p-3.5 rounded-xl bg-paper border-2 border-ink flex items-center justify-center lg:justify-start gap-2.5 shadow-neo-sm">
+            <div className="p-3.5 rounded-xl bg-[#E8FAF4] border-2 border-ink flex items-center justify-center lg:justify-start gap-2.5 shadow-neo-sm">
               <Zap className="w-4 h-4 text-ink shrink-0" />
               <span className="text-xs font-bold text-ink font-mono">Bebas Collab Post Gratis</span>
             </div>
-            <div className="p-3.5 rounded-xl bg-paper border-2 border-ink flex items-center justify-center lg:justify-start gap-2.5 shadow-neo-sm">
+            <div className="p-3.5 rounded-xl bg-[#FFF8E7] border-2 border-ink flex items-center justify-center lg:justify-start gap-2.5 shadow-neo-sm">
               <TrendingUp className="w-4 h-4 text-ink shrink-0" />
               <span className="text-xs font-bold text-ink font-mono">Algoritma Viral & FYP</span>
             </div>

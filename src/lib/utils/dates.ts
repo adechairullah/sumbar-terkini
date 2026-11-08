@@ -35,3 +35,4 @@ export function getDynamicAnnouncementText(followersBadge = '330.200+ Total Foll
   const { month, year } = getDynamicMonthYear();
   return `${followersBadge} Lintas Ranah Minang & Nasional | Slot ${month} ${year} Dibuka`;
 }
+

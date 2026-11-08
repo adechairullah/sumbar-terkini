@@ -8,6 +8,7 @@ import { EditorialHero } from '@/components/editorial/EditorialHero';
 import { PlatformAnalyticsSection } from '@/components/editorial/PlatformAnalyticsSection';
 import { RateCardPricingSection } from '@/components/editorial/RateCardPricingSection';
 import { OrderCalculatorSection } from '@/components/editorial/OrderCalculatorSection';
+import { PortfolioShowcaseSection } from '@/components/editorial/PortfolioShowcaseSection';
 import { TermsAccordionSection } from '@/components/editorial/TermsAccordionSection';
 import { ContactHub } from '@/components/contact/ContactHub';
 import { EditorialFooter } from '@/components/editorial/EditorialFooter';
@@ -98,13 +99,13 @@ export function PublicMediaKitView({
   const isPlatformsEmpty = platforms !== undefined && platforms.length === 0;
 
   return (
-    <div className="min-h-screen bg-paper text-ink selection:bg-mustard selection:text-ink flex flex-col font-sans">
+    <div className="min-h-screen bg-paper text-ink selection:bg-mustard selection:text-ink flex flex-col font-sans overflow-x-hidden">
       {/* 1. Top Navbar with Official Brand Logo */}
       <EditorialNavbar />
 
-      {/* Main Content Container */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-8 py-8 sm:py-12 flex-1 w-full">
-        {/* 2. Brand Profile & Hero Section (Enlarged Full Logo Avatar & Dynamic Slot) */}
+      {/* Main Content Container (Mobile-Ergonomic Padding) */}
+      <main className="max-w-6xl mx-auto px-4 sm:px-8 py-8 sm:py-12 pb-28 sm:pb-16 flex-1 w-full">
+        {/* 2. Brand Profile & Hero Section (Enlarged 1:1 Full Logo Avatar & Dynamic Realtime Slot) */}
         <EditorialHero reactions={reactions} />
 
         {/* Empty platforms fallback state if platforms array is empty */}
@@ -125,7 +126,7 @@ export function PublicMediaKitView({
           <PlatformAnalyticsSection />
         )}
 
-        {/* 4. Rate Card & Pricing Packages (Exact 5 Packages) */}
+        {/* 4. Rate Card & Pricing Packages (5 Packages with Highlighted Free Instagram Story) */}
         <RateCardPricingSection onSelectPackage={setSelectedPackageId} />
 
         {/* 5. Essential Interactive Widget 1: Order & Price Calculator + Auto WhatsApp Generator */}
@@ -134,24 +135,24 @@ export function PublicMediaKitView({
           onSelectPackage={setSelectedPackageId}
         />
 
-        {/* Anchor for Portfolio compatibility */}
-        <div id="portfolio-showcase" className="sr-only" aria-hidden="true" />
+        {/* 6. Active Instagram Collaboration Showcase Grid with Exact Statistics */}
+        <PortfolioShowcaseSection />
 
-        {/* 6. Essential Interactive Widget 3: Accordion Syarat & Ketentuan (T&C) Iklan */}
+        {/* 7. Essential Interactive Widget 3: Accordion Syarat & Ketentuan (T&C) Iklan */}
         <TermsAccordionSection />
 
-        {/* 7. Official Contact Hub */}
+        {/* 8. Official Contact Hub with Instant PDF Download & Copy Buttons */}
         <ContactHub
           email={settings?.business_email || 'mrrobot4444@gmail.com'}
           whatsappNumber={settings?.whatsapp_number || '6289617662378'}
-          mediaKitPdfUrl={settings?.media_kit_pdf_url || '/media-kit-sumbar-terkini.pdf'}
+          mediaKitPdfUrl="/media-kit-sumbar-terkini.pdf"
         />
       </main>
 
-      {/* 8. Tactile Neo-Brutalist Footer with Official Logo */}
+      {/* 9. Tactile Neo-Brutalist Footer with Official Logo */}
       <EditorialFooter />
 
-      {/* 9. Mobile Sticky Floating CTA Bar */}
+      {/* 10. Mobile Sticky Floating CTA Bar */}
       <MobileStickyCta />
     </div>
   );

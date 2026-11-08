@@ -14,6 +14,7 @@ export function EditorialNavbar() {
     { label: 'Platform & Metrik', href: '#socials-heading' },
     { label: 'Rate Card', href: '#rate-calculator' },
     { label: 'Kalkulator Order', href: '#order-calculator-widget' },
+    { label: 'Portofolio', href: '#portfolio-showcase' },
     { label: 'Syarat & Ketentuan', href: '#terms-section' },
     { label: 'Kontak', href: '#contact-hub' },
   ];

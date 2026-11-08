@@ -16,8 +16,24 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Sumbar Terkini | Creator Media Kit & Endorsement Hub',
-  description: 'Official Media Kit, rate card interaktif, dan live engagement analytics Sumbar Terkini. Hubungi kami untuk kerjasama brand, liputan, dan endorsement.',
+  title: 'Sumbar Terkini | Media Kit & Paid Promote Resmi 2026',
+  description:
+    'Suara Terdepan Informasi, Politik & Berita Viral Sumatera Barat dan Nasional. Media kit resmi, tarif paid promote, analitik jangkauan 330.200+ followers aktif, dan pemesanan iklan online via WhatsApp.',
+  keywords: [
+    'Sumbar Terkini',
+    'Media Kit Sumbar',
+    'Paid Promote Padang',
+    'Iklan Sumatera Barat',
+    'Endorsement Minang',
+    'Berita Viral Sumbar',
+  ],
+  openGraph: {
+    title: 'Sumbar Terkini | Media Kit & Paid Promote Resmi 2026',
+    description:
+      'Suara Terdepan Informasi, Politik & Berita Viral Sumatera Barat dan Nasional. Jangkauan 330.200+ Followers Aktif lintas Instagram, TikTok, dan Facebook.',
+    type: 'website',
+    locale: 'id_ID',
+  },
 };
 
 export default function RootLayout({
@@ -26,8 +42,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={`${plusJakarta.variable} ${spaceMono.variable}`}>
-      <body className="font-sans antialiased bg-paper text-ink min-h-screen">
+    <html lang="id" className={`${plusJakarta.variable} ${spaceMono.variable} scroll-smooth`}>
+      <body className="font-sans antialiased bg-slate-950 text-slate-100 min-h-screen">
         {children}
       </body>
     </html>

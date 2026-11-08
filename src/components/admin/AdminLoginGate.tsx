@@ -180,7 +180,7 @@ export function AdminLoginGate({ onAuthenticated }: AdminLoginGateProps) {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@sumbarterkini.com"
+                  placeholder="mrrobot4444@gmail.com"
                   autoComplete="email"
                   className="w-full px-4 py-3 border-2 border-ink rounded-xl font-mono text-sm focus:outline-none focus:ring-2 focus:ring-mustard bg-white text-ink placeholder:text-ink/30 min-h-[48px]"
                   disabled={loading}

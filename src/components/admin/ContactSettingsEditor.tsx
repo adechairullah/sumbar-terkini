@@ -44,7 +44,7 @@ export function ContactSettingsEditor({
     'Halo Admin {{creator_name}}, saya tertarik untuk booking endorsement: {{package_names}} (Tier {{tier_name}}).'
   );
   const [businessEmail, setBusinessEmail] = useState(
-    initialSettings.business_email || 'partner@sumbarterkini.com'
+    initialSettings.business_email || 'mrrobot4444@gmail.com'
   );
   const [mediaKitPdfUrl, setMediaKitPdfUrl] = useState(
     initialSettings.media_kit_pdf_url || '/downloads/media-kit-sumbar-terkini.pdf'
@@ -263,7 +263,7 @@ export function ContactSettingsEditor({
               type="email"
               value={businessEmail}
               onChange={(e) => setBusinessEmail(e.target.value)}
-              placeholder="partner@sumbarterkini.com"
+              placeholder="mrrobot4444@gmail.com"
               className={cn(
                 'w-full px-4 py-3 bg-white border-2 border-ink rounded-xl font-mono text-sm text-ink focus:outline-none focus:ring-2 focus:ring-mustard min-h-[44px]',
                 errors.email && 'border-coral'

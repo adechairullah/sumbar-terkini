@@ -640,7 +640,7 @@ describe('F14: One-Click Contact Copy & Toast', () => {
       return true;
     };
     copyToClipboard(seedSiteSettings.business_email);
-    expect(copiedText).toBe('kerjasama@sumbarterkini.id');
+    expect(copiedText).toBe('mrrobot4444@gmail.com');
   });
 
   test('T1.14.2: Successful copy triggers interactive toast notification with Tersalin ke clipboard!', () => {

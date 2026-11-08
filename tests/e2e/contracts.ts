@@ -103,7 +103,7 @@ export const seedSiteSettings: SiteSettings = {
   ],
   whatsapp_number: '6281234567890',
   whatsapp_template: 'Halo Admin Sumbar Terkini! Saya ingin booking endorsement untuk brand saya.',
-  business_email: 'kerjasama@sumbarterkini.id',
+  business_email: 'mrrobot4444@gmail.com',
   media_kit_pdf_url: '/media-kit-sumbar-terkini-2026.pdf',
   updated_at: '2026-11-07T04:00:00Z'
 };

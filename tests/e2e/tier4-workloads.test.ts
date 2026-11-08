@@ -89,7 +89,7 @@ describe('Tier 4: Realistic Application Workload Scenarios', () => {
       return 'Tersalin ke clipboard!';
     };
     const toast = onCopy(seedSiteSettings.business_email);
-    expect(copiedText).toBe('kerjasama@sumbarterkini.id');
+    expect(copiedText).toBe('mrrobot4444@gmail.com');
     expect(toast).toBe('Tersalin ke clipboard!');
   });
 

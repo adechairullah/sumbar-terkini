@@ -11,18 +11,18 @@ export function MobileStickyCta() {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t-2 border-ink p-3 sm:hidden shadow-[0_-4px_16px_rgba(30,30,30,0.1)]">
       <div className="flex items-center justify-between gap-2.5 max-w-md mx-auto">
-        {/* Brand Icon & Quick Price */}
-        <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-lg border-2 border-ink overflow-hidden bg-white shrink-0 relative p-0.5">
+        {/* Brand Icon & Quick Price (Enlarged and Crisp) */}
+        <div className="flex items-center gap-2.5">
+          <div className="w-11 h-11 rounded-xl border-2 border-ink overflow-hidden bg-white shrink-0 relative">
             <Image
               src="/logo-sumbar-terkini.png"
               alt="Logo"
               fill
-              className="object-contain"
+              className="object-cover"
             />
           </div>
           <div>
-            <div className="text-[11px] font-mono font-black text-ink leading-tight">
+            <div className="text-xs font-mono font-black text-ink leading-tight">
               Sumbar Terkini
             </div>
             <div className="text-[10px] font-mono text-ink/70">

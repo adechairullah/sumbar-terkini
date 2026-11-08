@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { MEDIA_KIT_DATA } from '@/data/mediaKitData';
-import { MessageCircle, Mail, ExternalLink, Heart } from 'lucide-react';
+import { MessageCircle, Mail, Heart } from 'lucide-react';
 
 export function EditorialFooter() {
   const { brand, platforms } = MEDIA_KIT_DATA;
@@ -12,7 +12,6 @@ export function EditorialFooter() {
     { label: 'Platform & Metrik', href: '#socials-heading' },
     { label: 'Rate Card Iklan', href: '#rate-calculator' },
     { label: 'Kalkulator Order', href: '#order-calculator-widget' },
-    { label: 'Portofolio Kolaborasi', href: '#portfolio-showcase' },
     { label: 'Syarat & Ketentuan', href: '#terms-section' },
     { label: 'Kontak Resmi', href: '#contact-hub' },
   ];
@@ -21,19 +20,19 @@ export function EditorialFooter() {
     <footer className="border-t-2 border-ink bg-white mt-16 py-12 px-4 sm:px-8">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b-2 border-ink/10">
-          {/* Brand Info & Logo */}
+          {/* Brand Info & Logo (Enlarged and Crisp 1:1) */}
           <div className="md:col-span-6 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-white border-2 border-ink shadow-neo-sm overflow-hidden relative shrink-0 p-1">
+            <div className="flex items-center gap-3.5">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white border-2 border-ink shadow-neo-sm overflow-hidden relative shrink-0">
                 <Image
                   src="/logo-sumbar-terkini.png"
                   alt="Sumbar Terkini Logo"
                   fill
-                  className="object-contain"
+                  className="object-cover"
                 />
               </div>
               <div>
-                <h3 className="font-black text-lg text-ink font-sans">
+                <h3 className="font-black text-lg sm:text-xl text-ink font-sans">
                   {brand.name}
                 </h3>
                 <p className="font-mono text-xs text-ink/70">
@@ -42,16 +41,16 @@ export function EditorialFooter() {
               </div>
             </div>
 
-            <p className="text-xs sm:text-sm text-ink/80 leading-relaxed max-w-md font-sans">
+            <p className="text-xs sm:text-sm text-ink/80 leading-relaxed max-w-md font-sans font-normal">
               {brand.description}
             </p>
 
-            <div className="flex items-center gap-3 pt-1">
+            <div className="flex flex-wrap items-center gap-3 pt-1">
               <a
                 href={brand.whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="neo-button min-h-[44px] py-2 px-3.5 rounded-xl bg-mint text-ink text-xs font-mono font-bold flex items-center gap-1.5 border-2 border-ink shadow-neo-sm"
+                className="neo-button min-h-[44px] py-2 px-3.5 rounded-xl bg-mint text-ink text-xs font-mono font-bold flex items-center gap-1.5 border-2 border-ink shadow-neo-sm hover:bg-mint-hover"
               >
                 <MessageCircle className="w-4 h-4 text-ink" />
                 <span>WhatsApp: {brand.whatsappDisplay}</span>

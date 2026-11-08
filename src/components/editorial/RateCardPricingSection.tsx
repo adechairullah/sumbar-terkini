@@ -30,8 +30,8 @@ export function RateCardPricingSection({ onSelectPackage }: RateCardPricingSecti
   const getPackageTheme = (id: string, isPopular?: boolean, isBestValue?: boolean) => {
     if (isBestValue) {
       return {
-        cardBg: 'bg-white',
-        borderAccent: 'border-mint',
+        cardBg: 'bg-[#F2FCF8]', // Soft mint tint
+        borderTop: 'bg-[#06D6A0]',
         badgeBg: 'bg-mint text-ink',
         buttonBg: 'bg-mint hover:bg-mint-hover text-ink',
         hasFreeStory: true,
@@ -39,8 +39,8 @@ export function RateCardPricingSection({ onSelectPackage }: RateCardPricingSecti
     }
     if (isPopular) {
       return {
-        cardBg: 'bg-white',
-        borderAccent: 'border-mustard',
+        cardBg: 'bg-[#FFFDF3]', // Soft mustard tint
+        borderTop: 'bg-[#FFD166]',
         badgeBg: 'bg-coral text-ink',
         buttonBg: 'bg-mustard hover:bg-mustard-hover text-ink',
         hasFreeStory: true,
@@ -48,25 +48,25 @@ export function RateCardPricingSection({ onSelectPackage }: RateCardPricingSecti
     }
     if (id === 'foto-desain') {
       return {
-        cardBg: 'bg-white',
-        borderAccent: 'border-ink',
-        badgeBg: 'bg-[#FFF8E7] text-ink border-ink/40',
+        cardBg: 'bg-[#FAF8F5]', // Warm paper tint
+        borderTop: 'bg-[#1E1E1E]',
+        badgeBg: 'bg-white text-ink border-ink/40',
         buttonBg: 'bg-paper hover:bg-mustard text-ink',
         hasFreeStory: true,
       };
     }
     if (id === 'video-reels') {
       return {
-        cardBg: 'bg-white',
-        borderAccent: 'border-ink',
+        cardBg: 'bg-[#FFF8FA]', // Soft rose tint
+        borderTop: 'bg-[#EF476F]',
         badgeBg: 'bg-[#FFEBEF] text-ink border-ink/40',
-        buttonBg: 'bg-paper hover:bg-mustard text-ink',
+        buttonBg: 'bg-paper hover:bg-coral text-ink',
         hasFreeStory: true,
       };
     }
     return {
       cardBg: 'bg-white',
-      borderAccent: 'border-ink',
+      borderTop: 'bg-ink',
       badgeBg: 'bg-paper text-ink border-ink/40',
       buttonBg: 'bg-paper hover:bg-mustard text-ink',
       hasFreeStory: false,
@@ -80,7 +80,7 @@ export function RateCardPricingSection({ onSelectPackage }: RateCardPricingSecti
         <div>
           <div className="inline-flex items-center gap-1.5 neo-badge bg-mustard text-ink text-xs mb-2">
             <Tag className="w-3.5 h-3.5 text-ink" />
-            <span>Rate Card & Paket Iklan 2026</span>
+            <span>Rate Card & Paket Iklan Resmi 2026</span>
           </div>
           <h2 id="pricing-heading" className="text-3xl sm:text-4xl font-black text-ink tracking-tight font-sans">
             Tarif & Pilihan Paket Paid Promote
@@ -104,30 +104,42 @@ export function RateCardPricingSection({ onSelectPackage }: RateCardPricingSecti
           return (
             <div
               key={pkg.id}
-              className={`neo-card rounded-2xl border-2 border-ink shadow-neo p-6 flex flex-col justify-between transition-transform hover:translate-y-[-2px] relative ${
+              className={`neo-card rounded-2xl border-2 border-ink shadow-neo p-6 flex flex-col justify-between transition-transform hover:translate-y-[-2px] relative overflow-hidden ${
                 theme.cardBg
               } ${isFeatured ? 'ring-2 ring-ink ring-offset-2' : ''}`}
             >
-              {/* Top Badges */}
-              <div>
-                <div className="flex items-center justify-between mb-3 min-h-[28px]">
-                  {pkg.isBestValue ? (
-                    <span className="neo-badge bg-mint text-ink text-[11px] font-mono font-bold flex items-center gap-1">
-                      <Star className="w-3 h-3 fill-ink text-ink" />
-                      <span>{pkg.badge || 'BEST VALUE'}</span>
-                    </span>
-                  ) : pkg.isPopular ? (
-                    <span className="neo-badge bg-coral text-ink text-[11px] font-mono font-bold flex items-center gap-1">
-                      <Flame className="w-3 h-3 fill-ink text-ink" />
-                      <span>{pkg.badge || 'Paling Laris'}</span>
-                    </span>
-                  ) : (
-                    <span className={`neo-badge text-[11px] font-mono ${theme.badgeBg}`}>
-                      {pkg.name}
-                    </span>
-                  )}
+              {/* Colorful Top Accent Line */}
+              <div className={`absolute top-0 left-0 right-0 h-2 ${theme.borderTop}`} />
 
-                  <span className="text-[11px] font-mono font-bold text-ink/70">
+              {/* Card Content */}
+              <div className="pt-1">
+                {/* Responsive Badges Header: NO OVERLAPPING */}
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {pkg.isBestValue ? (
+                      <span className="neo-badge bg-mint text-ink text-xs font-mono font-bold flex items-center gap-1 shrink-0">
+                        <Star className="w-3.5 h-3.5 fill-ink text-ink" />
+                        <span>BEST VALUE</span>
+                      </span>
+                    ) : pkg.isPopular ? (
+                      <span className="neo-badge bg-coral text-ink text-xs font-mono font-bold flex items-center gap-1 shrink-0">
+                        <Flame className="w-3.5 h-3.5 fill-ink text-ink" />
+                        <span>PALING LARIS</span>
+                      </span>
+                    ) : (
+                      <span className={`neo-badge text-[11px] font-mono shrink-0 ${theme.badgeBg}`}>
+                        {pkg.name}
+                      </span>
+                    )}
+
+                    {pkg.isBestValue && (
+                      <span className="neo-badge bg-mustard text-ink text-[10px] font-mono font-bold shrink-0">
+                        Hemat Rp600.000
+                      </span>
+                    )}
+                  </div>
+
+                  <span className="neo-badge bg-white text-ink text-[10px] font-mono font-bold shrink-0 border border-ink">
                     {pkg.platformsSupported === 'all'
                       ? '3 Platform Serentak'
                       : '1 Platform Pilihan'}

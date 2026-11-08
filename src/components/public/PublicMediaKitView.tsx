@@ -8,7 +8,6 @@ import { EditorialHero } from '@/components/editorial/EditorialHero';
 import { PlatformAnalyticsSection } from '@/components/editorial/PlatformAnalyticsSection';
 import { RateCardPricingSection } from '@/components/editorial/RateCardPricingSection';
 import { OrderCalculatorSection } from '@/components/editorial/OrderCalculatorSection';
-import { PortfolioShowcaseSection } from '@/components/editorial/PortfolioShowcaseSection';
 import { TermsAccordionSection } from '@/components/editorial/TermsAccordionSection';
 import { ContactHub } from '@/components/contact/ContactHub';
 import { EditorialFooter } from '@/components/editorial/EditorialFooter';
@@ -105,7 +104,7 @@ export function PublicMediaKitView({
 
       {/* Main Content Container (Mobile-Ergonomic Padding) */}
       <main className="max-w-6xl mx-auto px-4 sm:px-8 py-8 sm:py-12 pb-28 sm:pb-16 flex-1 w-full">
-        {/* 2. Brand Profile & Hero Section (Enlarged 1:1 Full Logo Avatar & Dynamic Realtime Slot) */}
+        {/* 2. Brand Profile & Hero Section (Enlarged 1:1 Full Logo Avatar) */}
         <EditorialHero reactions={reactions} />
 
         {/* Empty platforms fallback state if platforms array is empty */}
@@ -135,13 +134,13 @@ export function PublicMediaKitView({
           onSelectPackage={setSelectedPackageId}
         />
 
-        {/* 6. Active Instagram Collaboration Showcase Grid with Exact Statistics */}
-        <PortfolioShowcaseSection />
+        {/* Anchor for Portfolio compatibility without rendering the removed section */}
+        <div id="portfolio-showcase" className="sr-only" aria-hidden="true" />
 
-        {/* 7. Essential Interactive Widget 3: Accordion Syarat & Ketentuan (T&C) Iklan */}
+        {/* 6. Essential Interactive Widget 3: Accordion Syarat & Ketentuan (T&C) Iklan */}
         <TermsAccordionSection />
 
-        {/* 8. Official Contact Hub with Instant PDF Download & Copy Buttons */}
+        {/* 7. Official Contact Hub with Instant PDF Download & Copy Buttons */}
         <ContactHub
           email={settings?.business_email || 'mrrobot4444@gmail.com'}
           whatsappNumber={settings?.whatsapp_number || '6289617662378'}
@@ -149,10 +148,10 @@ export function PublicMediaKitView({
         />
       </main>
 
-      {/* 9. Tactile Neo-Brutalist Footer with Official Logo */}
+      {/* 8. Tactile Neo-Brutalist Footer with Official Logo */}
       <EditorialFooter />
 
-      {/* 10. Mobile Sticky Floating CTA Bar */}
+      {/* 9. Mobile Sticky Floating CTA Bar */}
       <MobileStickyCta />
     </div>
   );

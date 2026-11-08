@@ -14,7 +14,6 @@ import {
   MapPin,
   Gift,
 } from 'lucide-react';
-import { getDynamicSlotText } from '@/lib/utils/dates';
 import { VisitorReaction } from '@/types';
 
 interface EditorialHeroProps {
@@ -23,7 +22,6 @@ interface EditorialHeroProps {
 
 export function EditorialHero({ reactions = [] }: EditorialHeroProps) {
   const { brand } = MEDIA_KIT_DATA;
-  const dynamicSlotText = getDynamicSlotText();
 
   return (
     <section className="neo-card p-6 sm:p-10 lg:p-12 bg-white rounded-2xl sm:rounded-3xl border-2 sm:border-3 border-ink shadow-neo-lg mb-12 sm:mb-16 relative overflow-hidden">
@@ -40,29 +38,25 @@ export function EditorialHero({ reactions = [] }: EditorialHeroProps) {
           </div>
         </div>
 
-        {/* Live Slot Status (Dynamic Month & Year) */}
+        {/* Followers Badge */}
         <div className="flex items-center gap-2">
-          <span className="neo-badge bg-mint text-ink text-xs font-mono font-bold flex items-center gap-1.5 shadow-neo-sm">
+          <span className="neo-badge bg-coral text-ink text-xs font-mono font-bold shadow-neo-sm flex items-center gap-1.5">
             <span className="flex h-2 w-2 rounded-full bg-ink animate-ping" />
-            <span>{dynamicSlotText}</span>
-          </span>
-
-          <span className="neo-badge bg-coral text-ink text-xs font-mono font-bold hidden sm:inline-flex">
-            {brand.followersBadge}
+            <span>{brand.followersBadge}</span>
           </span>
         </div>
       </div>
 
       {/* Main Hero Identity Layout (Full-Width High-Impact Editorial) */}
       <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-12">
-        {/* Large Prominent Logo Avatar (Full 1:1, Crisp, Edge-to-Edge) */}
-        <div className="relative w-36 h-36 sm:w-44 sm:h-44 lg:w-52 lg:h-52 rounded-3xl border-3 border-ink shadow-neo overflow-hidden bg-white shrink-0">
+        {/* Large Prominent Logo Avatar (Full 1:1 Circular Badge, Crisp & Edge-to-Edge) */}
+        <div className="relative w-36 h-36 sm:w-44 sm:h-44 lg:w-52 lg:h-52 rounded-full border-3 border-ink shadow-neo overflow-hidden bg-white shrink-0">
           <Image
             src="/logo-sumbar-terkini.png"
             alt={brand.name}
             fill
             priority
-            className="object-cover"
+            className="object-contain"
           />
         </div>
 

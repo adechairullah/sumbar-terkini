@@ -4,28 +4,25 @@ import React from 'react';
 import Image from 'next/image';
 import { ArrowUpRight, Sparkles } from 'lucide-react';
 import { MEDIA_KIT_DATA } from '@/data/mediaKitData';
-import { getDynamicAnnouncementText } from '@/lib/utils/dates';
 
 export function EditorialNavbar() {
   const { brand } = MEDIA_KIT_DATA;
-  const announcement = getDynamicAnnouncementText(brand.followersBadge);
 
   const navLinks = [
     { label: 'Platform & Metrik', href: '#socials-heading' },
-    { label: 'Rate Card', href: '#rate-calculator' },
+    { label: 'Rate Card Iklan', href: '#rate-calculator' },
     { label: 'Kalkulator Order', href: '#order-calculator-widget' },
-    { label: 'Portofolio', href: '#portfolio-showcase' },
     { label: 'Syarat & Ketentuan', href: '#terms-section' },
-    { label: 'Kontak', href: '#contact-hub' },
+    { label: 'Kontak Resmi', href: '#contact-hub' },
   ];
 
   return (
     <>
-      {/* Top Announcement Bar (Dynamic Month & Year) */}
+      {/* Top Announcement Bar (Clean without slot mention) */}
       <div className="bg-mustard border-b-2 border-ink py-2 px-4 text-center text-xs font-mono font-bold text-ink">
         <span className="inline-flex items-center gap-1.5">
           <Sparkles className="w-3.5 h-3.5 text-ink shrink-0" />
-          <span>{announcement}</span>
+          <span>{brand.followersBadge} Lintas Ranah Minang & Nasional • Media Kit & Paid Promote Resmi Sumbar Terkini</span>
         </span>
       </div>
 
@@ -34,12 +31,12 @@ export function EditorialNavbar() {
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
           {/* Logo & Brand Identity (Enlarged and Proportional) */}
           <a href="#" className="flex items-center gap-3.5 group">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white border-2 border-ink shadow-neo-sm flex items-center justify-center overflow-hidden shrink-0 relative group-hover:scale-105 transition-transform">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white border-2 border-ink shadow-neo-sm flex items-center justify-center overflow-hidden shrink-0 relative group-hover:scale-105 transition-transform">
               <Image
                 src="/logo-sumbar-terkini.png"
                 alt="Sumbar Terkini Logo"
                 fill
-                className="object-cover"
+                className="object-contain"
                 priority
               />
             </div>

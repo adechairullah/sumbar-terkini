@@ -9,7 +9,7 @@ async function generateMediaKitPdf() {
   // Create a multi-page A4 document
   const doc = new PDFDocument({
     size: 'A4',
-    margins: { top: 36, bottom: 36, left: 36, right: 36 },
+    margins: { top: 32, bottom: 32, left: 32, right: 32 },
     info: {
       Title: 'Sumbar Terkini Official Media Kit & Rate Card 2026',
       Author: 'Sumbar Terkini Digital Media Network',
@@ -21,18 +21,20 @@ async function generateMediaKitPdf() {
   const writeStream = fs.createWriteStream(outputPath);
   doc.pipe(writeStream);
 
-  // Design Tokens
+  // Design Tokens - Neo-Brutalist Soft Palette
   const COLOR_INK = '#1E1E1E';
   const COLOR_PAPER = '#FAF8F5';
   const COLOR_MUSTARD = '#FFD166';
   const COLOR_MINT = '#06D6A0';
   const COLOR_CORAL = '#EF476F';
   const COLOR_WHITE = '#FFFFFF';
-  const COLOR_MUTED = '#555555';
+  const COLOR_MUTED = '#4A4A4A';
+  const COLOR_BORDER = '#1E1E1E';
 
   const PAGE_WIDTH = 595.28;
   const PAGE_HEIGHT = 841.89;
-  const CONTENT_WIDTH = PAGE_WIDTH - 72; // 523.28
+  const MARGIN = 32;
+  const CONTENT_WIDTH = PAGE_WIDTH - MARGIN * 2; // 531.28
 
   // Helper to draw background
   function drawPageBackground() {
@@ -41,13 +43,13 @@ async function generateMediaKitPdf() {
     doc.restore();
   }
 
-  // Helper for Neo-Brutalist Box
-  function drawNeoBox(x, y, w, h, bgColor = COLOR_WHITE, borderColor = COLOR_INK) {
+  // Helper for Neo-Brutalist Box with clean borders & shadows
+  function drawNeoBox(x, y, w, h, bgColor = COLOR_WHITE, borderColor = COLOR_BORDER, shadowOffset = 3) {
     doc.save();
     // Shadow
-    doc.rect(x + 3, y + 3, w, h).fill(COLOR_INK);
+    doc.rect(x + shadowOffset, y + shadowOffset, w, h).fill(COLOR_INK);
     // Main Box
-    doc.rect(x, y, w, h).fillAndStroke(bgColor, borderColor).lineWidth(2);
+    doc.rect(x, y, w, h).fillAndStroke(bgColor, borderColor).lineWidth(1.75);
     doc.restore();
   }
 
@@ -57,273 +59,286 @@ async function generateMediaKitPdf() {
   drawPageBackground();
 
   // Top Accent Banner
-  drawNeoBox(36, 36, CONTENT_WIDTH, 28, COLOR_MUSTARD);
-  doc.font('Helvetica-Bold').fontSize(10).fillColor(COLOR_INK);
+  drawNeoBox(MARGIN, 32, CONTENT_WIDTH, 26, COLOR_MUSTARD);
+  doc.font('Helvetica-Bold').fontSize(9).fillColor(COLOR_INK);
   doc.text(
-    'SUMBAR TERKINI • MEDIA KIT & PAID PROMOTE RESMI 2026 • 330.200+ FOLLOWERS',
-    36,
-    44,
+    'SUMBAR TERKINI • MEDIA KIT & PAID PROMOTE RESMI 2026 • 330.200+ TOTAL FOLLOWERS',
+    MARGIN,
+    40,
     { width: CONTENT_WIDTH, align: 'center' }
   );
 
   // Hero Card with Logo
-  drawNeoBox(36, 76, CONTENT_WIDTH, 140, COLOR_WHITE);
+  drawNeoBox(MARGIN, 68, CONTENT_WIDTH, 124, COLOR_WHITE);
   if (fs.existsSync(logoPath)) {
-    doc.image(logoPath, 52, 90, { width: 110, height: 110 });
+    doc.image(logoPath, MARGIN + 14, 78, { width: 104, height: 104 });
   }
 
-  doc.font('Helvetica-Bold').fontSize(24).fillColor(COLOR_INK);
-  doc.text('SUMBAR TERKINI', 180, 92);
+  const heroTextX = MARGIN + 130;
+  const heroTextWidth = CONTENT_WIDTH - 144;
 
-  doc.font('Helvetica-Bold').fontSize(11).fillColor(COLOR_MUTED);
-  doc.text('@sumbarterkini_id • Media Berita & Viral Sumatera Barat', 180, 120);
+  doc.font('Helvetica-Bold').fontSize(22).fillColor(COLOR_INK);
+  doc.text('SUMBAR TERKINI', heroTextX, 78);
 
-  doc.font('Helvetica').fontSize(9.5).fillColor(COLOR_INK);
+  doc.font('Helvetica-Bold').fontSize(10).fillColor('#B71C1C');
+  doc.text('Suara Terdepan Informasi, Politik & Berita Viral Sumatera Barat', heroTextX, 104);
+
+  doc.font('Helvetica-Bold').fontSize(8.5).fillColor(COLOR_MUTED);
+  doc.text('@sumbarterkini_id  •  Padang, Sumatera Barat', heroTextX, 120);
+
+  doc.font('Helvetica').fontSize(8.5).fillColor(COLOR_INK);
   doc.text(
-    'Suara terdepan informasi digital, politik, kebijakan publik, dan peristiwa viral di Sumatera Barat serta nasional. Menghubungkan jutaan masyarakat Minang di ranah dan rantau dengan engagement organik terverifikasi.',
-    180,
-    140,
-    { width: CONTENT_WIDTH - 156, lineGap: 3 }
+    'Media informasi digital terkemuka di Sumatera Barat menyajikan liputan berita terkini, analisis kebijakan publik, dan peristiwa viral secara cepat, tajam, dan terpercaya. Menjangkau jutaan audiens Minangkabau di ranah dan rantau.',
+    heroTextX,
+    136,
+    { width: heroTextWidth, lineGap: 2.5 }
   );
 
-  // Big Stat Badges Row
-  const statBoxWidth = (CONTENT_WIDTH - 24) / 3;
-  drawNeoBox(36, 230, statBoxWidth, 68, COLOR_WHITE);
-  doc.font('Helvetica-Bold').fontSize(9).fillColor(COLOR_MUTED);
-  doc.text('TOTAL AUDIENS AKTIF', 48, 242);
-  doc.font('Helvetica-Bold').fontSize(18).fillColor(COLOR_INK);
-  doc.text('330.200+', 48, 258);
-  doc.font('Helvetica').fontSize(8).fillColor(COLOR_MUTED);
-  doc.text('IG + TikTok + FB Page', 48, 280);
+  // Big Stat Badges Row (3 Cards)
+  const statCardW = (CONTENT_WIDTH - 16) / 3;
+  const statY = 204;
+  const statH = 60;
 
-  drawNeoBox(36 + statBoxWidth + 12, 230, statBoxWidth, 68, COLOR_MINT);
-  doc.font('Helvetica-Bold').fontSize(9).fillColor(COLOR_INK);
-  doc.text('JANGKAUAN BULANAN', 48 + statBoxWidth + 12, 242);
-  doc.font('Helvetica-Bold').fontSize(18).fillColor(COLOR_INK);
-  doc.text('12.5 Juta+', 48 + statBoxWidth + 12, 258);
-  doc.font('Helvetica').fontSize(8).fillColor(COLOR_INK);
-  doc.text('Total Tayangan & Reach', 48 + statBoxWidth + 12, 280);
-
-  drawNeoBox(36 + (statBoxWidth + 12) * 2, 230, statBoxWidth, 68, COLOR_WHITE);
-  doc.font('Helvetica-Bold').fontSize(9).fillColor(COLOR_MUTED);
-  doc.text('STANDAR KONTEN', 48 + (statBoxWidth + 12) * 2, 242);
-  doc.font('Helvetica-Bold').fontSize(14).fillColor(COLOR_INK);
-  doc.text('FREE STORY', 48 + (statBoxWidth + 12) * 2, 258);
-  doc.font('Helvetica').fontSize(8).fillColor(COLOR_MUTED);
-  doc.text('Include di Semua Paket', 48 + (statBoxWidth + 12) * 2, 280);
-
-  // 3 Platforms Breakdown
-  doc.font('Helvetica-Bold').fontSize(14).fillColor(COLOR_INK);
-  doc.text('Jangkauan & Metrik 3 Platform Resmi', 36, 318);
-
-  // Instagram Card
-  drawNeoBox(36, 342, CONTENT_WIDTH, 96, COLOR_WHITE);
-  doc.save();
-  doc.rect(36, 342, 6, 96).fill('#E1306C');
-  doc.restore();
-  doc.font('Helvetica-Bold').fontSize(14).fillColor('#E1306C');
-  doc.text('Instagram • @sumbarterkini_id', 54, 354);
-  doc.font('Helvetica-Bold').fontSize(11).fillColor(COLOR_INK);
-  doc.text('31.500 (31,5K) Followers  |  Avg. ER: 4.8%', 54, 372);
-  doc.font('Helvetica').fontSize(9).fillColor(COLOR_MUTED);
-  doc.text(
-    '• Jangkauan per Post / Reels: 25.000 - 120.000+ akun\n• Tayangan Bulanan: 1.8 Juta+ tayangan / bulan\n• Avg. Story Views (24 Jam): 3.500 - 6.200 penonton aktif',
-    54,
-    390,
-    { lineGap: 3 }
-  );
-
-  // TikTok Card
-  drawNeoBox(36, 450, CONTENT_WIDTH, 96, COLOR_WHITE);
-  doc.save();
-  doc.rect(36, 450, 6, 96).fill('#000000');
-  doc.restore();
-  doc.font('Helvetica-Bold').fontSize(14).fillColor(COLOR_INK);
-  doc.text('TikTok • @sumbarterkini_id', 54, 462);
-  doc.font('Helvetica-Bold').fontSize(11).fillColor(COLOR_INK);
-  doc.text('86.200 (86,2K) Followers  |  Avg. ER: 7.4% (FYP Engine)', 54, 480);
-  doc.font('Helvetica').fontSize(9).fillColor(COLOR_MUTED);
-  doc.text(
-    '• Video Views Organik: 45.000 - 500.000+ views (Algoritma FYP kuat)\n• Tayangan Bulanan: 4.5 Juta+ tayangan / bulan\n• Avg. Shares & Saves: 800 - 3.500+ interaksi per video viral',
-    54,
-    498,
-    { lineGap: 3 }
-  );
-
-  // Facebook Card
-  drawNeoBox(36, 558, CONTENT_WIDTH, 96, COLOR_WHITE);
-  doc.save();
-  doc.rect(36, 558, 6, 96).fill('#1877F2');
-  doc.restore();
-  doc.font('Helvetica-Bold').fontSize(14).fillColor('#1877F2');
-  doc.text('Facebook Page • Sumbar Terkini', 54, 570);
-  doc.font('Helvetica-Bold').fontSize(11).fillColor(COLOR_INK);
-  doc.text('212.500 (212,5K) Followers  |  Avg. ER: 3.9%', 54, 588);
-  doc.font('Helvetica').fontSize(9).fillColor(COLOR_MUTED);
-  doc.text(
-    '• Post Reach: 65.000 - 350.000+ akun (sangat kuat usia 25-54 tahun)\n• Jangkauan Bulanan: 6.2 Juta+ jangkauan / bulan\n• Komunitas terhubung: Padang, Bukittinggi, Riau, hingga perantau Jabodetabek',
-    54,
-    606,
-    { lineGap: 3 }
-  );
-
-  // Audience Demographics Summary
-  drawNeoBox(36, 668, CONTENT_WIDTH, 120, COLOR_WHITE);
-  doc.font('Helvetica-Bold').fontSize(12).fillColor(COLOR_INK);
-  doc.text('Demografi Audiens & Wilayah Sebaran', 50, 680);
-
-  doc.font('Helvetica-Bold').fontSize(9).fillColor(COLOR_MUTED);
-  doc.text('SEBARAN LOKASI UTAMA:', 50, 700);
-  doc.font('Helvetica').fontSize(9).fillColor(COLOR_INK);
-  doc.text('• Sumatera Barat (Padang, Bukittinggi, Payakumbuh, Pariaman, Solok): 68%', 50, 715);
-  doc.text('• Jabodetabek, Riau, & Perantau Minang Nusantara: 24%', 50, 730);
-  doc.text('• Nasional Lainnya: 8%', 50, 745);
-
-  doc.font('Helvetica-Bold').fontSize(9).fillColor(COLOR_MUTED);
-  doc.text('RENTANG USIA DOMINAN (90% Produktif):', 310, 700);
-  doc.font('Helvetica').fontSize(9).fillColor(COLOR_INK);
-  doc.text('• 18 - 24 Tahun: 25%', 310, 715);
-  doc.text('• 25 - 34 Tahun: 42% (Tertinggi)', 310, 730);
-  doc.text('• 35 - 44 Tahun: 23%   |   45+ Tahun: 10%', 310, 745);
-
-  // Footer P1
+  // Card 1
+  drawNeoBox(MARGIN, statY, statCardW, statH, '#FFF8E7');
   doc.font('Helvetica-Bold').fontSize(8).fillColor(COLOR_MUTED);
-  doc.text('Sumbar Terkini Official Media Kit • Halaman 1 dari 2', 36, 804, { width: CONTENT_WIDTH, align: 'center' });
+  doc.text('TOTAL AUDIENS AKTIF', MARGIN + 10, statY + 8);
+  doc.font('Helvetica-Bold').fontSize(16).fillColor(COLOR_INK);
+  doc.text('330.200+ Akun', MARGIN + 10, statY + 22);
+  doc.font('Helvetica').fontSize(7.5).fillColor(COLOR_MUTED);
+  doc.text('IG (31.5K) • TikTok (86.2K) • FB (212.5K)', MARGIN + 10, statY + 42);
+
+  // Card 2
+  drawNeoBox(MARGIN + statCardW + 8, statY, statCardW, statH, '#E8FAF4');
+  doc.font('Helvetica-Bold').fontSize(8).fillColor(COLOR_MUTED);
+  doc.text('JANGKAUAN BULANAN', MARGIN + statCardW + 18, statY + 8);
+  doc.font('Helvetica-Bold').fontSize(16).fillColor(COLOR_INK);
+  doc.text('12.5 Juta+ Views', MARGIN + statCardW + 18, statY + 22);
+  doc.font('Helvetica').fontSize(7.5).fillColor(COLOR_MUTED);
+  doc.text('Akumulasi tayangan lintas 3 platform', MARGIN + statCardW + 18, statY + 42);
+
+  // Card 3
+  drawNeoBox(MARGIN + (statCardW + 8) * 2, statY, statCardW, statH, '#FFEBEF');
+  doc.font('Helvetica-Bold').fontSize(8).fillColor(COLOR_MUTED);
+  doc.text('GARANSI KONTEN', MARGIN + (statCardW + 8) * 2 + 10, statY + 8);
+  doc.font('Helvetica-Bold').fontSize(14).fillColor(COLOR_INK);
+  doc.text('FREE INSTASTORY', MARGIN + (statCardW + 8) * 2 + 10, statY + 23);
+  doc.font('Helvetica').fontSize(7.5).fillColor(COLOR_MUTED);
+  doc.text('Sudah include di setiap paket promo', MARGIN + (statCardW + 8) * 2 + 10, statY + 42);
+
+  // Section Heading: 3 Platforms
+  doc.font('Helvetica-Bold').fontSize(13).fillColor(COLOR_INK);
+  doc.text('Analitik & Benchmark 3 Platform Media Sosial Resmi', MARGIN, 280);
+
+  // 1. Instagram Card
+  const platH = 82;
+  const igY = 300;
+  drawNeoBox(MARGIN, igY, CONTENT_WIDTH, platH, COLOR_WHITE);
+  doc.save();
+  doc.rect(MARGIN, igY, 6, platH).fill('#E1306C');
+  doc.restore();
+  doc.font('Helvetica-Bold').fontSize(12).fillColor('#E1306C');
+  doc.text('1. Instagram • @sumbarterkini_id', MARGIN + 16, igY + 10);
+  doc.font('Helvetica-Bold').fontSize(10).fillColor(COLOR_INK);
+  doc.text('31.500 Followers  |  Avg. ER: 4.8%  (Visual & Storytelling Hub)', MARGIN + 16, igY + 26);
+  doc.font('Helvetica').fontSize(8.5).fillColor(COLOR_MUTED);
+  doc.text('• Jangkauan per Post / Reels: 25.000 - 120.000+ akun', MARGIN + 16, igY + 42);
+  doc.text('• Total Tayangan Bulanan: 1.8 Juta+ tayangan / bulan', MARGIN + 16, igY + 54);
+  doc.text('• Rata-rata Story Views: 3.500 - 6.200 penonton aktif per 24 jam', MARGIN + 16, igY + 66);
+
+  // 2. TikTok Card
+  const ttY = igY + platH + 10;
+  drawNeoBox(MARGIN, ttY, CONTENT_WIDTH, platH, COLOR_WHITE);
+  doc.save();
+  doc.rect(MARGIN, ttY, 6, platH).fill('#000000');
+  doc.restore();
+  doc.font('Helvetica-Bold').fontSize(12).fillColor('#000000');
+  doc.text('2. TikTok • @sumbarterkini_id', MARGIN + 16, ttY + 10);
+  doc.font('Helvetica-Bold').fontSize(10).fillColor(COLOR_INK);
+  doc.text('86.200 Followers  |  Avg. ER: 7.4%  (Algoritma Viral & FYP)', MARGIN + 16, ttY + 26);
+  doc.font('Helvetica').fontSize(8.5).fillColor(COLOR_MUTED);
+  doc.text('• Video Views Organik: 45.000 - 500.000+ views (sering FYP nasional)', MARGIN + 16, ttY + 42);
+  doc.text('• Total Tayangan Bulanan: 4.5 Juta+ tayangan / bulan', MARGIN + 16, ttY + 54);
+  doc.text('• Rata-rata Shares & Saves: 800 - 3.500+ interaksi per video viral', MARGIN + 16, ttY + 66);
+
+  // 3. Facebook Card
+  const fbY = ttY + platH + 10;
+  drawNeoBox(MARGIN, fbY, CONTENT_WIDTH, platH, COLOR_WHITE);
+  doc.save();
+  doc.rect(MARGIN, fbY, 6, platH).fill('#1877F2');
+  doc.restore();
+  doc.font('Helvetica-Bold').fontSize(12).fillColor('#1877F2');
+  doc.text('3. Facebook Page • Sumbar Terkini', MARGIN + 16, fbY + 10);
+  doc.font('Helvetica-Bold').fontSize(10).fillColor(COLOR_INK);
+  doc.text('212.500 Followers  |  Avg. ER: 3.9%  (Komunitas Dewasa & Perantau)', MARGIN + 16, fbY + 26);
+  doc.font('Helvetica').fontSize(8.5).fillColor(COLOR_MUTED);
+  doc.text('• Post Reach Organik: 65.000 - 350.000+ akun (sangat kuat usia 25-54 tahun)', MARGIN + 16, fbY + 42);
+  doc.text('• Jangkauan Bulanan: 6.2 Juta+ akun terjangkau / bulan', MARGIN + 16, fbY + 54);
+  doc.text('• Basis Komunitas: Kota Padang, Bukittinggi, Riau, dan perantau Jabodetabek', MARGIN + 16, fbY + 66);
+
+  // Demographics Box
+  const demoY = fbY + platH + 12;
+  const demoH = 120;
+  drawNeoBox(MARGIN, demoY, CONTENT_WIDTH, demoH, COLOR_WHITE);
+  doc.font('Helvetica-Bold').fontSize(11).fillColor(COLOR_INK);
+  doc.text('Persebaran Demografi & Karakteristik Audiens', MARGIN + 14, demoY + 10);
+
+  // Two columns inside Demographics
+  const colW = (CONTENT_WIDTH - 36) / 2;
+  doc.font('Helvetica-Bold').fontSize(8.5).fillColor('#B71C1C');
+  doc.text('SEBARAN LOKASI GEOGRAFIS:', MARGIN + 14, demoY + 28);
+  doc.font('Helvetica').fontSize(8).fillColor(COLOR_INK);
+  doc.text('• Sumatera Barat: 68% (Padang, Bukittinggi, Payakumbuh, Pariaman, dll)', MARGIN + 14, demoY + 42);
+  doc.text('• Jabodetabek, Riau, & Perantau Minang: 24%', MARGIN + 14, demoY + 56);
+  doc.text('• Wilayah Nasional Lainnya: 8%', MARGIN + 14, demoY + 70);
+
+  doc.font('Helvetica-Bold').fontSize(8.5).fillColor('#00796B');
+  doc.text('RENTANG USIA PRODUKTIF (90% Usia 18-44):', MARGIN + 14 + colW + 8, demoY + 28);
+  doc.font('Helvetica').fontSize(8).fillColor(COLOR_INK);
+  doc.text('• 18 - 24 Tahun: 25% (Gen Z & Mahasiswa)', MARGIN + 14 + colW + 8, demoY + 42);
+  doc.text('• 25 - 34 Tahun: 42% (Milenial Muda / Konsumen Utama)', MARGIN + 14 + colW + 8, demoY + 56);
+  doc.text('• 35 - 44 Tahun: 23%  |  45+ Tahun: 10%', MARGIN + 14 + colW + 8, demoY + 70);
+
+  doc.font('Helvetica-Bold').fontSize(8).fillColor(COLOR_MUTED);
+  doc.text('Rasio Gender: Pria 52%  •  Wanita 48%  |  Daya Beli Menengah ke Atas', MARGIN + 14, demoY + 96, { width: CONTENT_WIDTH - 28, align: 'center' });
+
+  // Page 1 Footer
+  doc.font('Helvetica-Bold').fontSize(7.5).fillColor(COLOR_MUTED);
+  doc.text('Sumbar Terkini Official Media Kit 2026 • Halaman 1 dari 2', MARGIN, 804, { width: CONTENT_WIDTH, align: 'center' });
 
   // =========================================================================
-  // PAGE 2: Official Rate Card & Terms
+  // PAGE 2: Rate Card, Terms & Contact
   // =========================================================================
   doc.addPage();
   drawPageBackground();
 
-  // Top Alert: Free Story in Every Promo
-  drawNeoBox(36, 36, CONTENT_WIDTH, 36, COLOR_MINT);
-  doc.font('Helvetica-Bold').fontSize(11).fillColor(COLOR_INK);
-  doc.text('PROMO SPESIAL: SETIAP PASANG IKLAN OTOMATIS FREE 1X INSTAGRAM STORY 24 JAM', 36, 48, {
-    width: CONTENT_WIDTH,
-    align: 'center',
-  });
-
-  doc.font('Helvetica-Bold').fontSize(16).fillColor(COLOR_INK);
-  doc.text('Daftar Tarif & Paket Paid Promote 2026', 36, 88);
-
-  // Rate Card Cards
-  // 1. Foto / Desain
-  drawNeoBox(36, 112, CONTENT_WIDTH, 68, COLOR_WHITE);
-  doc.font('Helvetica-Bold').fontSize(13).fillColor(COLOR_INK);
-  doc.text('1. Foto / Desain (Carousel)', 50, 122);
-  doc.font('Helvetica-Bold').fontSize(14).fillColor(COLOR_INK);
-  doc.text('Rp150.000', CONTENT_WIDTH - 60, 122, { align: 'right' });
-  doc.font('Helvetica').fontSize(8.5).fillColor(COLOR_MUTED);
+  // Top Free Story Alert Banner
+  drawNeoBox(MARGIN, 32, CONTENT_WIDTH, 28, COLOR_MINT);
+  doc.font('Helvetica-Bold').fontSize(9.5).fillColor(COLOR_INK);
   doc.text(
-    'Maksimal 10 slide carousel di 1 platform pilihan (IG, TikTok, atau FB). Bebas fitur Collab Post & tag akun gratis.\nBONUS: Termasuk 1x Free Instagram Story 24 Jam.',
-    50,
-    140,
-    { width: CONTENT_WIDTH - 28, lineGap: 2 }
+    'PROMO SPESIAL: SETIAP PASANG IKLAN OTOMATIS INCLUDE FREE 1X INSTAGRAM STORY 24 JAM',
+    MARGIN,
+    41,
+    { width: CONTENT_WIDTH, align: 'center' }
   );
+
+  doc.font('Helvetica-Bold').fontSize(14).fillColor(COLOR_INK);
+  doc.text('Daftar Tarif & Paket Paid Promote Resmi 2026', MARGIN, 70);
+
+  // 5 Packages Cards with clean spacing and NO overlaps
+  const pkgH = 58;
+  let currentPkgY = 88;
+
+  // 1. Foto / Desain
+  drawNeoBox(MARGIN, currentPkgY, CONTENT_WIDTH, pkgH, COLOR_WHITE);
+  doc.font('Helvetica-Bold').fontSize(11).fillColor(COLOR_INK);
+  doc.text('1. Foto / Desain (Carousel Slide)', MARGIN + 14, currentPkgY + 8);
+  doc.font('Helvetica-Bold').fontSize(12).fillColor(COLOR_INK);
+  doc.text('Rp150.000', MARGIN, currentPkgY + 8, { width: CONTENT_WIDTH - 14, align: 'right' });
+  doc.font('Helvetica').fontSize(8).fillColor(COLOR_MUTED);
+  doc.text('• Maksimal 10 slide di 1 platform pilihan (Instagram, TikTok, atau Facebook)', MARGIN + 14, currentPkgY + 24);
+  doc.text('• Bebas fitur Collab Post resmi akun @sumbarterkini_id & tag akun bisnis Anda', MARGIN + 14, currentPkgY + 35);
+  doc.font('Helvetica-Bold').fontSize(8).fillColor('#00796B');
+  doc.text('• BONUS: Sudah include Free 1x Instagram Story 24 Jam dengan link stiker aktif', MARGIN + 14, currentPkgY + 46);
 
   // 2. Video Reels
-  drawNeoBox(36, 190, CONTENT_WIDTH, 68, COLOR_WHITE);
-  doc.font('Helvetica-Bold').fontSize(13).fillColor(COLOR_INK);
-  doc.text('2. Video Reels', 50, 200);
-  doc.font('Helvetica-Bold').fontSize(14).fillColor(COLOR_INK);
-  doc.text('Rp200.000', CONTENT_WIDTH - 60, 200, { align: 'right' });
-  doc.font('Helvetica').fontSize(8.5).fillColor(COLOR_MUTED);
-  doc.text(
-    'Durasi maksimal 3 menit di 1 platform pilihan (IG, TikTok, atau FB). Bebas fitur Collab Post & tag akun.\nBONUS: Termasuk 1x Free Instagram Story 24 Jam.',
-    50,
-    218,
-    { width: CONTENT_WIDTH - 28, lineGap: 2 }
-  );
+  currentPkgY += pkgH + 8;
+  drawNeoBox(MARGIN, currentPkgY, CONTENT_WIDTH, pkgH, COLOR_WHITE);
+  doc.font('Helvetica-Bold').fontSize(11).fillColor(COLOR_INK);
+  doc.text('2. Video Reels (Format 9:16)', MARGIN + 14, currentPkgY + 8);
+  doc.font('Helvetica-Bold').fontSize(12).fillColor(COLOR_INK);
+  doc.text('Rp200.000', MARGIN, currentPkgY + 8, { width: CONTENT_WIDTH - 14, align: 'right' });
+  doc.font('Helvetica').fontSize(8).fillColor(COLOR_MUTED);
+  doc.text('• Durasi video maksimal 3 menit di 1 platform pilihan (IG Reels, TikTok, atau FB Video)', MARGIN + 14, currentPkgY + 24);
+  doc.text('• Bebas fitur Collab Post bersama @sumbarterkini_id, audio trending & caption optimal', MARGIN + 14, currentPkgY + 35);
+  doc.font('Helvetica-Bold').fontSize(8).fillColor('#00796B');
+  doc.text('• BONUS: Sudah include Free 1x Instagram Story 24 Jam dengan link stiker aktif', MARGIN + 14, currentPkgY + 46);
 
-  // 3. Paket Combo Reels (Best Seller)
-  drawNeoBox(36, 268, CONTENT_WIDTH, 78, COLOR_MUSTARD);
+  // 3. Paket Combo Reels (Popular)
+  currentPkgY += pkgH + 8;
+  const comboH = 68;
+  drawNeoBox(MARGIN, currentPkgY, CONTENT_WIDTH, comboH, '#FFF8E7');
+  doc.font('Helvetica-Bold').fontSize(11).fillColor(COLOR_INK);
+  doc.text('3. Paket Combo Reels  [PALING LARIS / BEST SELLER]', MARGIN + 14, currentPkgY + 8);
   doc.font('Helvetica-Bold').fontSize(13).fillColor(COLOR_INK);
-  doc.text('3. Paket Combo Reels  [PALING LARIS / POPULAR]', 50, 278);
-  doc.font('Helvetica-Bold').fontSize(15).fillColor(COLOR_INK);
-  doc.text('Rp300.000', CONTENT_WIDTH - 60, 278, { align: 'right' });
-  doc.font('Helvetica').fontSize(8.5).fillColor(COLOR_INK);
-  doc.text(
-    'Durasi maksimal 3 menit High Definition. Mirroring tayang serentak di 3 platform sekaligus: IG, TikTok, dan Facebook!\nBebas fitur Collab Post di semua kanal. Menjangkau 330.200+ followers secara simultan.\nBONUS: Termasuk 1x Free Instagram Story 24 Jam dengan link sticker aktif.',
-    50,
-    296,
-    { width: CONTENT_WIDTH - 28, lineGap: 2 }
-  );
+  doc.text('Rp300.000', MARGIN, currentPkgY + 8, { width: CONTENT_WIDTH - 14, align: 'right' });
+  doc.font('Helvetica').fontSize(8).fillColor(COLOR_INK);
+  doc.text('• Durasi maksimal 3 menit. Mirroring tayang serentak di 3 platform sekaligus: IG, TikTok, dan FB!', MARGIN + 14, currentPkgY + 24);
+  doc.text('• Bebas fitur Collab Post di semua kanal. Menjangkau gabungan 330.200+ followers aktif', MARGIN + 14, currentPkgY + 36);
+  doc.font('Helvetica-Bold').fontSize(8).fillColor('#B71C1C');
+  doc.text('• BONUS: Sudah include Free 1x Instagram Story 24 Jam dengan link stiker aktif', MARGIN + 14, currentPkgY + 48);
 
-  // 4. Instagram Story Standalone
-  drawNeoBox(36, 356, CONTENT_WIDTH, 64, COLOR_WHITE);
-  doc.font('Helvetica-Bold').fontSize(13).fillColor(COLOR_INK);
-  doc.text('4. Instagram Story Standalone', 50, 366);
-  doc.font('Helvetica-Bold').fontSize(14).fillColor(COLOR_INK);
-  doc.text('Rp50.000', CONTENT_WIDTH - 60, 366, { align: 'right' });
-  doc.font('Helvetica').fontSize(8.5).fillColor(COLOR_MUTED);
-  doc.text(
-    'Harga per tayangan selama 24 jam penuh di Instagram Story. Bebas mention & tag akun bisnis Anda serta stiker tautan langsung (link sticker ke WhatsApp / Website). Cocok untuk flash promo harian.',
-    50,
-    384,
-    { width: CONTENT_WIDTH - 28, lineGap: 2 }
-  );
+  // 4. Instagram Story
+  currentPkgY += comboH + 8;
+  drawNeoBox(MARGIN, currentPkgY, CONTENT_WIDTH, pkgH, COLOR_WHITE);
+  doc.font('Helvetica-Bold').fontSize(11).fillColor(COLOR_INK);
+  doc.text('4. Instagram Story Standalone', MARGIN + 14, currentPkgY + 8);
+  doc.font('Helvetica-Bold').fontSize(12).fillColor(COLOR_INK);
+  doc.text('Rp50.000', MARGIN, currentPkgY + 8, { width: CONTENT_WIDTH - 14, align: 'right' });
+  doc.font('Helvetica').fontSize(8).fillColor(COLOR_MUTED);
+  doc.text('• Harga per 1x tayangan Story selama 24 jam penuh di akun @sumbarterkini_id', MARGIN + 14, currentPkgY + 24);
+  doc.text('• Bisa mention, tag akun, dan stiker tautan langsung (link sticker ke WhatsApp / Web)', MARGIN + 14, currentPkgY + 35);
+  doc.text('• Cocok untuk flash promo, pengumuman lowongan kerja, atau reminder event cepat', MARGIN + 14, currentPkgY + 46);
 
   // 5. Langganan Bulanan
-  drawNeoBox(36, 430, CONTENT_WIDTH, 78, COLOR_WHITE);
-  doc.save();
-  doc.rect(36, 430, 6, 78).fill(COLOR_MINT);
-  doc.restore();
+  currentPkgY += pkgH + 8;
+  const langgananH = 72;
+  drawNeoBox(MARGIN, currentPkgY, CONTENT_WIDTH, langgananH, '#E8FAF4');
+  doc.font('Helvetica-Bold').fontSize(11).fillColor(COLOR_INK);
+  doc.text('5. Langganan Bulanan  [BEST VALUE - HEMAT Rp600.000]', MARGIN + 14, currentPkgY + 8);
   doc.font('Helvetica-Bold').fontSize(13).fillColor(COLOR_INK);
-  doc.text('5. Langganan Bulanan  [BEST VALUE - HEMAT Rp600.000]', 50, 440);
-  doc.font('Helvetica-Bold').fontSize(15).fillColor(COLOR_INK);
-  doc.text('Rp600.000', CONTENT_WIDTH - 60, 440, { align: 'right' });
-  doc.font('Helvetica').fontSize(8.5).fillColor(COLOR_MUTED);
-  doc.text(
-    '4 kali tayang dalam sebulan dengan jadwal fleksibel. Setiap penayangan Mirroring di IG, TikTok, dan Facebook (Total 12 postingan!). Bebas pilih format Foto / Slides / Reels. Bebas Collab Post di seluruh jadwal.\nBONUS: Termasuk 4x Free Instagram Stories selama periode langganan.',
-    50,
-    458,
-    { width: CONTENT_WIDTH - 28, lineGap: 2 }
-  );
+  doc.text('Rp600.000', MARGIN, currentPkgY + 8, { width: CONTENT_WIDTH - 14, align: 'right' });
+  doc.font('Helvetica').fontSize(8).fillColor(COLOR_INK);
+  doc.text('• 4 kali penayangan sebulan (jadwal fleksibel). Setiap penayangan Mirroring di IG, TikTok, dan FB (Total 12 postingan!)', MARGIN + 14, currentPkgY + 24);
+  doc.text('• Bebas pilih format per sesi: Foto / Slides / Video Reels. Bebas Collab Post di seluruh jadwal', MARGIN + 14, currentPkgY + 36);
+  doc.font('Helvetica-Bold').fontSize(8).fillColor('#00796B');
+  doc.text('• BONUS: Termasuk 4x Free Instagram Stories selama periode langganan bulanan', MARGIN + 14, currentPkgY + 48);
 
-  // Terms & Conditions Brief
-  doc.font('Helvetica-Bold').fontSize(12).fillColor(COLOR_INK);
-  doc.text('Syarat & Ketentuan Kemitraan (T&C)', 36, 526);
+  // Terms and Conditions Box
+  currentPkgY += langgananH + 10;
+  const tcH = 114;
+  drawNeoBox(MARGIN, currentPkgY, CONTENT_WIDTH, tcH, COLOR_WHITE);
+  doc.font('Helvetica-Bold').fontSize(10).fillColor(COLOR_INK);
+  doc.text('Syarat & Ketentuan Kemitraan (T&C)', MARGIN + 14, currentPkgY + 8);
 
-  drawNeoBox(36, 544, CONTENT_WIDTH, 140, COLOR_WHITE);
-  doc.font('Helvetica-Bold').fontSize(8.5).fillColor(COLOR_INK);
-  doc.text('1. Ketentuan Konten: ', 48, 554, { continued: true });
-  doc.font('Helvetica').fillColor(COLOR_MUTED).text('Tidak menerima SARA, judi online, pinjol ilegal, atau skema penipuan. Produk obat/makanan wajib berizin BPOM/PIRT.');
+  doc.font('Helvetica-Bold').fontSize(7.5).fillColor(COLOR_INK);
+  doc.text('1. Ketentuan Konten: ', MARGIN + 14, currentPkgY + 24, { continued: true });
+  doc.font('Helvetica').fillColor(COLOR_MUTED).text('Tidak menerima SARA, judi online, pinjaman ilegal, atau skema penipuan. Produk obat/makanan wajib berizin BPOM/PIRT.');
 
-  doc.font('Helvetica-Bold').fillColor(COLOR_INK).text('2. Materi Siap Unggah: ', 48, 574, { continued: true });
+  doc.font('Helvetica-Bold').fillColor(COLOR_INK).text('2. Materi Pengiklan: ', MARGIN + 14, currentPkgY + 40, { continued: true });
   doc.font('Helvetica').fillColor(COLOR_MUTED).text('Materi (foto/video/caption/link) disiapkan pengiklan. Wajib dikirim maksimal H-1 via WA Dokumen atau Google Drive.');
 
-  doc.font('Helvetica-Bold').fillColor(COLOR_INK).text('3. Pembayaran & Slot: ', 48, 594, { continued: true });
-  doc.font('Helvetica').fillColor(COLOR_MUTED).text('Slot dikunci setelah full payment. Reschedule maksimal 1x (konfirmasi minimal H-1 / 24 jam sebelum tayang).');
+  doc.font('Helvetica-Bold').fillColor(COLOR_INK).text('3. Pembayaran & Slot: ', MARGIN + 14, currentPkgY + 56, { continued: true });
+  doc.font('Helvetica').fillColor(COLOR_MUTED).text('Jadwal dikunci setelah full payment. Reschedule maksimal 1x (konfirmasi minimal H-1 / 24 jam sebelum tayang).');
 
-  doc.font('Helvetica-Bold').fillColor(COLOR_INK).text('4. Batas Tanggung Jawab: ', 48, 614, { continued: true });
-  doc.font('Helvetica').fillColor(COLOR_MUTED).text('Story tayang 24 jam penuh; feed permanen. Pengelola menyediakan ruang promosi dan tidak bertanggung jawab atas konversi transaksi pembeli.');
+  doc.font('Helvetica-Bold').fillColor(COLOR_INK).text('4. Penayangan: ', MARGIN + 14, currentPkgY + 72, { continued: true });
+  doc.font('Helvetica').fillColor(COLOR_MUTED).text('Story tayang 24 jam penuh; Feed/Reels dipertahankan permanen sesuai paket. Mendukung Collab Post gratis.');
 
-  doc.font('Helvetica-Bold').fillColor(COLOR_INK).text('5. Fitur Collab Post: ', 48, 634, { continued: true });
-  doc.font('Helvetica').fillColor(COLOR_MUTED).text('Gratis fitur Collab Post Instagram di seluruh paket postingan feed & reels tanpa biaya tambahan.');
+  doc.font('Helvetica-Bold').fillColor(COLOR_INK).text('5. Batas Tanggung Jawab: ', MARGIN + 14, currentPkgY + 88, { continued: true });
+  doc.font('Helvetica').fillColor(COLOR_MUTED).text('Pengelola menyediakan ruang promosi dan tidak bertanggung jawab atas sengketa transaksi pembeli dengan pengiklan.');
 
-  doc.font('Helvetica-Bold').fillColor(COLOR_INK).text('6. Bonus Story: ', 48, 654, { continued: true });
-  doc.font('Helvetica').fillColor(COLOR_MUTED).text('Setiap pemesanan promosi (Foto, Reels, Combo, Langganan) otomatis mendapatkan 1x repost Free Instagram Story.');
+  // Official Contacts Box (Bottom)
+  currentPkgY += tcH + 10;
+  const contactH = 82;
+  drawNeoBox(MARGIN, currentPkgY, CONTENT_WIDTH, contactH, COLOR_MUSTARD);
+  doc.font('Helvetica-Bold').fontSize(12).fillColor(COLOR_INK);
+  doc.text('Pemesanan Slot & Kontak Kemitraan Resmi', MARGIN + 16, currentPkgY + 10);
 
-  // Contact Footer Box
-  drawNeoBox(36, 698, CONTENT_WIDTH, 84, COLOR_MUSTARD);
-  doc.font('Helvetica-Bold').fontSize(14).fillColor(COLOR_INK);
-  doc.text('Pemesanan Slot & Konsultasi Resmi', 50, 710);
+  doc.font('Helvetica-Bold').fontSize(9).fillColor(COLOR_INK);
+  doc.text('• WhatsApp Pemesanan: 0896-1766-2378  (Direct Link: https://wa.me/6289617662378)', MARGIN + 16, currentPkgY + 28);
+  doc.text('• Email Bisnis / Invoice: mrrobot4444@gmail.com', MARGIN + 16, currentPkgY + 42);
+  doc.text('• Akun Media Sosial: Instagram & TikTok @sumbarterkini_id  •  Facebook Page: Sumbar Terkini', MARGIN + 16, currentPkgY + 56);
+  doc.text('• Domisili Kantor: Padang, Sumatera Barat, Indonesia', MARGIN + 16, currentPkgY + 68);
 
-  doc.font('Helvetica-Bold').fontSize(10).fillColor(COLOR_INK);
-  doc.text('WhatsApp: 0896-1766-2378  (https://wa.me/6289617662378)', 50, 730);
-  doc.text('Email Kemitraan: mrrobot4444@gmail.com', 50, 746);
-  doc.text('Alamat Kantor: Padang, Sumatera Barat, Indonesia', 50, 762);
-
-  // Footer P2
-  doc.font('Helvetica-Bold').fontSize(8).fillColor(COLOR_MUTED);
-  doc.text('Sumbar Terkini Official Media Kit • Halaman 2 dari 2', 36, 804, { width: CONTENT_WIDTH, align: 'center' });
+  // Page 2 Footer
+  doc.font('Helvetica-Bold').fontSize(7.5).fillColor(COLOR_MUTED);
+  doc.text('Sumbar Terkini Official Media Kit 2026 • Halaman 2 dari 2', MARGIN, 804, { width: CONTENT_WIDTH, align: 'center' });
 
   doc.end();
 
   return new Promise((resolve, reject) => {
     writeStream.on('finish', () => {
-      console.log('✅ Media Kit PDF successfully generated at:', outputPath);
+      console.log('✅ Clean non-overlapping Media Kit PDF successfully generated at:', outputPath);
       resolve(outputPath);
     });
     writeStream.on('error', reject);

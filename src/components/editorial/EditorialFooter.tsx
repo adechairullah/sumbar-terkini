@@ -12,7 +12,6 @@ export function EditorialFooter() {
     { label: 'Platform & Metrik', href: '#socials-heading' },
     { label: 'Rate Card Iklan', href: '#rate-calculator' },
     { label: 'Kalkulator Order', href: '#order-calculator-widget' },
-    { label: 'Portofolio Kolaborasi', href: '#portfolio-showcase' },
     { label: 'Syarat & Ketentuan', href: '#terms-section' },
     { label: 'Kontak Resmi', href: '#contact-hub' },
   ];
@@ -24,12 +23,12 @@ export function EditorialFooter() {
           {/* Brand Info & Logo (Enlarged and Crisp 1:1) */}
           <div className="md:col-span-6 space-y-4">
             <div className="flex items-center gap-3.5">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white border-2 border-ink shadow-neo-sm overflow-hidden relative shrink-0">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white border-2 border-ink shadow-neo-sm overflow-hidden relative shrink-0">
                 <Image
                   src="/logo-sumbar-terkini.png"
                   alt="Sumbar Terkini Logo"
                   fill
-                  className="object-cover"
+                  className="object-contain"
                 />
               </div>
               <div>

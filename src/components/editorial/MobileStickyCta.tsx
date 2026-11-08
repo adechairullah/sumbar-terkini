@@ -1,48 +1,57 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { MEDIA_KIT_DATA } from '@/data/mediaKitData';
-import { MessageCircle, Calculator, Zap } from 'lucide-react';
+import { MessageCircle, Calculator } from 'lucide-react';
 
 export function MobileStickyCta() {
   const { brand } = MEDIA_KIT_DATA;
 
-  const scrollToCalculator = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const el = document.getElementById('pricing-calculator');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
-    <aside
-      aria-label="Aksi Cepat Mobile"
-      className="lg:hidden fixed bottom-0 left-0 right-0 z-50 p-2.5 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 shadow-2xl"
-    >
-      <div className="max-w-md mx-auto grid grid-cols-2 gap-2">
-        {/* Quick Calculator Jump Button */}
-        <button
-          type="button"
-          onClick={scrollToCalculator}
-          className="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs uppercase tracking-wider border border-slate-700 shadow-md active:scale-95 transition-all min-h-[44px]"
-        >
-          <Calculator className="w-4 h-4 text-amber-400 shrink-0" />
-          <span>Kalkulator Tarif</span>
-        </button>
+    <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t-2 border-ink p-3 sm:hidden shadow-[0_-4px_16px_rgba(30,30,30,0.1)]">
+      <div className="flex items-center justify-between gap-2.5 max-w-md mx-auto">
+        {/* Brand Icon & Quick Price */}
+        <div className="flex items-center gap-2">
+          <div className="w-9 h-9 rounded-lg border-2 border-ink overflow-hidden bg-white shrink-0 relative p-0.5">
+            <Image
+              src="/logo-sumbar-terkini.png"
+              alt="Logo"
+              fill
+              className="object-contain"
+            />
+          </div>
+          <div>
+            <div className="text-[11px] font-mono font-black text-ink leading-tight">
+              Sumbar Terkini
+            </div>
+            <div className="text-[10px] font-mono text-ink/70">
+              Mulai Rp150.000
+            </div>
+          </div>
+        </div>
 
-        {/* WhatsApp Direct Floating Button */}
-        <a
-          href={brand.whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider border border-emerald-500 shadow-md shadow-emerald-950/50 active:scale-95 transition-all min-h-[44px]"
-        >
-          <MessageCircle className="w-4 h-4 fill-white shrink-0" />
-          <span>Chat WhatsApp</span>
-        </a>
+        {/* Action Buttons */}
+        <div className="flex items-center gap-2">
+          <a
+            href="#order-calculator-widget"
+            className="neo-button min-h-[44px] py-2 px-3 rounded-xl bg-paper hover:bg-mustard text-ink text-xs font-mono font-bold flex items-center gap-1 border-2 border-ink shadow-neo-sm"
+          >
+            <Calculator className="w-3.5 h-3.5 text-ink" />
+            <span>Hitung</span>
+          </a>
+
+          <a
+            href={brand.whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="neo-button min-h-[44px] py-2 px-3.5 rounded-xl bg-mint hover:bg-mint-hover text-ink text-xs font-mono font-black flex items-center gap-1.5 border-2 border-ink shadow-neo-sm"
+          >
+            <MessageCircle className="w-4 h-4 text-ink" />
+            <span>Pesan WA</span>
+          </a>
+        </div>
       </div>
-    </aside>
+    </div>
   );
 }
-

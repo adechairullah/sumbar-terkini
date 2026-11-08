@@ -1,106 +1,119 @@
 'use client';
 
 import React, { useState } from 'react';
-import { MEDIA_KIT_DATA } from '@/data/mediaKitData';
+import { MEDIA_KIT_DATA, TermSection } from '@/data/mediaKitData';
 import {
+  ShieldAlert,
   ChevronDown,
-  ShieldCheck,
-  FileText,
-  CreditCard,
-  Clock,
-  HelpCircle,
-  AlertTriangle,
+  CheckCircle2,
+  FileCheck2,
+  CalendarCheck,
+  Scale,
+  Sparkles,
 } from 'lucide-react';
 
 export function TermsAccordionSection() {
-  const { termsAndConditions } = MEDIA_KIT_DATA;
-  const [openIds, setOpenIds] = useState<string[]>(['tc-produk']); // first one open by default
+  const terms: TermSection[] = MEDIA_KIT_DATA.termsAndConditions;
+  const [openIds, setOpenIds] = useState<string[]>(['tc-produk', 'tc-materi']);
 
-  const toggleAccordion = (id: string) => {
+  const toggle = (id: string) => {
     setOpenIds((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
     );
   };
 
-  const getIcon = (name: string) => {
-    switch (name) {
+  const getIcon = (iconName: string) => {
+    switch (iconName) {
+      case 'ShieldAlert':
       case 'ShieldCheck':
-        return <ShieldCheck className="w-5 h-5 text-red-400 shrink-0" />;
+        return <ShieldAlert className="w-5 h-5 text-ink shrink-0" />;
+      case 'FileCheck2':
       case 'FileText':
-        return <FileText className="w-5 h-5 text-amber-400 shrink-0" />;
+        return <FileCheck2 className="w-5 h-5 text-ink shrink-0" />;
+      case 'CalendarCheck':
       case 'CreditCard':
-        return <CreditCard className="w-5 h-5 text-emerald-400 shrink-0" />;
+        return <CalendarCheck className="w-5 h-5 text-ink shrink-0" />;
+      case 'Scale':
       case 'Clock':
+        return <Scale className="w-5 h-5 text-ink shrink-0" />;
       default:
-        return <Clock className="w-5 h-5 text-sky-400 shrink-0" />;
+        return <CheckCircle2 className="w-5 h-5 text-ink shrink-0" />;
     }
   };
 
   return (
-    <section id="terms-accordion" className="py-14 sm:py-20 bg-slate-950 text-white border-b border-slate-800">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono font-bold text-slate-300 uppercase tracking-wider mb-2">
-            <HelpCircle className="w-3.5 h-3.5 text-amber-400" />
-            <span>Standar Operasional & Kebijakan Beriklan</span>
+    <section id="terms-section" className="my-12 sm:my-16" aria-labelledby="terms-heading">
+      {/* Section Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <div className="inline-flex items-center gap-1.5 neo-badge bg-mustard text-ink text-xs mb-2">
+            <Sparkles className="w-3.5 h-3.5 text-ink" />
+            <span>Standar Operasional & Kemitraan</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight font-sans">
+          <h2 id="terms-heading" className="text-3xl sm:text-4xl font-black text-ink tracking-tight font-sans">
             Syarat & Ketentuan (T&C) Iklan
           </h2>
-          <p className="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed">
-            Harap baca dan pahami pedoman resmi penayangan iklan berbayar (Paid Promote) di jaringan media Sumbar Terkini demi kelancaran kampanye Anda.
+          <p className="text-sm sm:text-base text-ink/80 mt-1 max-w-2xl font-normal">
+            Pedoman resmi penayangan iklan dan endorsement untuk menjaga kualitas ruang digital serta melindungi reputasi brand mitra.
           </p>
         </div>
 
-        {/* Collapsible Accordion Container */}
-        <div className="space-y-3.5">
-          {termsAndConditions.map((term) => {
-            const isOpen = openIds.includes(term.id);
-
-            return (
-              <div
-                key={term.id}
-                className="bg-slate-900/90 border border-slate-800 rounded-2xl overflow-hidden shadow-lg transition-colors"
-              >
-                {/* Accordion Toggle Header */}
-                <button
-                  type="button"
-                  onClick={() => toggleAccordion(term.id)}
-                  aria-expanded={isOpen}
-                  className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-slate-850 transition-colors focus:outline-none"
-                >
-                  <div className="flex items-center gap-3">
-                    {getIcon(term.iconName)}
-                    <span className="font-bold text-sm sm:text-base text-white">
-                      {term.title}
-                    </span>
-                  </div>
-
-                  <ChevronDown
-                    className={`w-5 h-5 text-slate-400 transition-transform duration-200 shrink-0 ${
-                      isOpen ? 'rotate-180 text-amber-400' : ''
-                    }`}
-                  />
-                </button>
-
-                {/* Accordion Content */}
-                {isOpen && (
-                  <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-slate-300 border-t border-slate-850 space-y-2.5">
-                    {term.points.map((pt, pIdx) => (
-                      <div key={pIdx} className="flex items-start gap-2.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0 mt-2" />
-                        <p className="leading-relaxed text-slate-200">{pt}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+        <div className="text-xs font-mono font-bold uppercase tracking-wider text-ink/70">
+          4 Ketentuan Resmi Terverifikasi
         </div>
+      </div>
+
+      {/* Accordion List */}
+      <div className="space-y-4">
+        {terms.map((item: TermSection) => {
+          const isOpen = openIds.includes(item.id);
+          return (
+            <div
+              key={item.id}
+              className="neo-card bg-white rounded-2xl border-2 border-ink shadow-neo overflow-hidden transition-all"
+            >
+              <button
+                type="button"
+                onClick={() => toggle(item.id)}
+                className="w-full min-h-[52px] p-5 sm:p-6 text-left flex items-center justify-between gap-4 bg-white hover:bg-paper transition-colors"
+                aria-expanded={isOpen}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-paper border-2 border-ink flex items-center justify-center shrink-0">
+                    {getIcon(item.iconName)}
+                  </div>
+                  <div>
+                    <h3 className="text-base sm:text-lg font-bold text-ink font-sans">
+                      {item.title}
+                    </h3>
+                  </div>
+                </div>
+
+                <div
+                  className={`w-8 h-8 rounded-lg bg-paper border-2 border-ink flex items-center justify-center shrink-0 transition-transform ${
+                    isOpen ? 'rotate-180 bg-mustard' : ''
+                  }`}
+                >
+                  <ChevronDown className="w-4 h-4 text-ink" />
+                </div>
+              </button>
+
+              {isOpen && (
+                <div className="px-5 pb-6 sm:px-6 pt-2 border-t-2 border-ink/10 bg-paper/50">
+                  <ul className="space-y-3 text-xs sm:text-sm text-ink/90 font-sans">
+                    {item.points.map((pt: string, idx: number) => (
+                      <li key={idx} className="flex items-start gap-2.5">
+                        <CheckCircle2 className="w-4 h-4 text-ink shrink-0 mt-0.5" />
+                        <span className="leading-relaxed">{pt}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     </section>
   );
 }
-

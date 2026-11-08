@@ -13,6 +13,7 @@ import {
   Calendar,
   Activity,
   Layers,
+  Sparkles,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -28,259 +29,236 @@ export function PlatformAnalyticsSection() {
       : platforms.filter((p) => p.id === activeTab);
 
   const tabs: { id: FilterTab; label: string; countBadge?: string }[] = [
-    { id: 'all', label: 'Semua Platform', countBadge: '3 Akun' },
+    { id: 'all', label: 'Semua Platform', countBadge: '3 Akun Resmi' },
     { id: 'instagram', label: 'Instagram', countBadge: '31,5K' },
     { id: 'tiktok', label: 'TikTok', countBadge: '86,2K' },
     { id: 'facebook', label: 'Facebook', countBadge: '212,5K' },
   ];
 
   return (
-    <section id="platform-analytics" className="py-14 sm:py-20 bg-slate-900 text-white border-b border-slate-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Heading */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
-          <span className="text-xs font-mono font-bold text-red-400 uppercase tracking-widest block mb-2">
-            Metrik & Data Jangkauan Otentik
-          </span>
-          <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight font-sans">
+    <section id="socials-heading" className="my-12 sm:my-16" aria-labelledby="analytics-heading">
+      {/* Section Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <div className="inline-flex items-center gap-1.5 neo-badge bg-mint text-ink text-xs mb-2">
+            <Sparkles className="w-3.5 h-3.5 text-ink" />
+            <span>Jangkauan & Analitik Terverifikasi</span>
+          </div>
+          <h2 id="analytics-heading" className="text-3xl sm:text-4xl font-black text-ink tracking-tight font-sans">
             Jangkauan & Analitik Platform
           </h2>
-          <p className="text-sm sm:text-base text-slate-300 mt-2.5 leading-relaxed">
-            Data audiens nyata media massa regional terdepan dengan benchmark keterlibatan (engagement) di atas rata-rata industri media digital Indonesia.
+          <p className="text-sm sm:text-base text-ink/80 mt-1 max-w-2xl font-normal">
+            Data industri media digital dengan benchmark engagement realistis berbasis 330.200+ followers aktif di Sumatera Barat dan nasional.
           </p>
-
-          {/* Interactive Platform Switcher Tabs */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-6 p-1.5 rounded-xl bg-slate-950/80 border border-slate-800 w-fit mx-auto">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveTab(tab.id)}
-                className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
-                  activeTab === tab.id
-                    ? 'bg-red-700 text-white shadow-md'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
-                }`}
-              >
-                <span>{tab.label}</span>
-                {tab.countBadge && (
-                  <span
-                    className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
-                      activeTab === tab.id
-                        ? 'bg-red-950 text-amber-300'
-                        : 'bg-slate-800 text-slate-400'
-                    }`}
-                  >
-                    {tab.countBadge}
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
         </div>
 
-        {/* Platform Metric Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <AnimatePresence mode="popLayout">
-            {filteredPlatforms.map((plat) => (
-              <motion.div
-                key={plat.id}
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-                className="bg-slate-950 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between hover:border-slate-700 transition-all shadow-xl relative overflow-hidden group"
+        {/* Total Reach Summary Badge */}
+        <div className="neo-card p-3 sm:p-4 bg-mustard rounded-xl border-2 border-ink shadow-neo-sm flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-white border-2 border-ink flex items-center justify-center font-mono font-bold text-ink shrink-0">
+            <Users className="w-5 h-5 text-ink" />
+          </div>
+          <div>
+            <div className="text-[10px] font-mono font-bold uppercase text-ink/70">
+              Total Jangkauan Aktif
+            </div>
+            <div className="text-lg font-mono font-black text-ink">
+              330.200+ Akun
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Widget 2: Interactive Platform Switcher Tabs */}
+      <div className="flex flex-wrap items-center gap-2 mb-8 p-1.5 rounded-xl bg-white border-2 border-ink shadow-neo-sm w-fit">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            onClick={() => setActiveTab(tab.id)}
+            className={`min-h-[44px] px-4 py-2 rounded-lg text-xs font-bold font-mono transition-all flex items-center gap-2 border-2 ${
+              activeTab === tab.id
+                ? 'bg-mustard text-ink border-ink shadow-neo-sm'
+                : 'bg-paper text-ink border-transparent hover:border-ink/30'
+            }`}
+          >
+            <span>{tab.label}</span>
+            {tab.countBadge && (
+              <span
+                className={`text-[10px] font-mono px-2 py-0.5 rounded-md border ${
+                  activeTab === tab.id
+                    ? 'bg-white text-ink border-ink'
+                    : 'bg-white text-ink/70 border-ink/20'
+                }`}
               >
-                {/* Accent Top Border Bar */}
-                <div
-                  className="absolute top-0 left-0 right-0 h-1.5"
-                  style={{ backgroundColor: plat.color }}
-                />
+                {tab.countBadge}
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
 
-                <div>
-                  {/* Header: Logo, Name, Badge */}
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-sm text-white shadow-md"
-                        style={{ backgroundColor: plat.color }}
-                      >
-                        {plat.id === 'instagram' ? 'IG' : plat.id === 'tiktok' ? 'TT' : 'FB'}
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-white text-base group-hover:text-amber-300 transition-colors">
-                          {plat.name}
-                        </h3>
-                        <p className="text-xs font-mono text-slate-400">{plat.handle}</p>
-                      </div>
-                    </div>
-
-                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-900 border border-slate-700 text-slate-300">
+      {/* Platform Metric Bento Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <AnimatePresence mode="popLayout">
+          {filteredPlatforms.map((plat) => (
+            <motion.div
+              key={plat.id}
+              layout
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.94 }}
+              transition={{ duration: 0.25 }}
+              className="neo-card bg-white rounded-2xl border-2 border-ink shadow-neo p-6 flex flex-col justify-between hover:translate-y-[-2px] transition-transform"
+            >
+              <div>
+                {/* Platform Header */}
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <span className="neo-badge bg-paper text-ink text-[11px] font-mono mb-1 inline-block">
                       {plat.badge}
                     </span>
+                    <h3 className="text-xl font-black text-ink font-sans flex items-center gap-2">
+                      {plat.name}
+                    </h3>
+                    <p className="text-xs font-mono font-bold text-ink/70 mt-0.5">
+                      {plat.handle}
+                    </p>
                   </div>
 
-                  <p className="text-xs text-slate-300 mb-5 leading-relaxed">
-                    {plat.description}
-                  </p>
-
-                  {/* Core Metrics Grid */}
-                  <div className="grid grid-cols-2 gap-3 mb-5 p-3.5 rounded-xl bg-slate-900 border border-slate-800">
-                    <div>
-                      <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">
-                        Total Followers
-                      </div>
-                      <div className="text-xl font-black font-mono text-white mt-0.5">
-                        {plat.followers.toLocaleString('id-ID')}
-                      </div>
-                      <div className="text-[10px] font-mono text-emerald-400 font-semibold mt-0.5">
-                        ✓ 100% Organik
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">
-                        Engagement Rate
-                      </div>
-                      <div className="text-xl font-black font-mono text-amber-400 mt-0.5">
-                        {plat.er}%
-                      </div>
-                      <div className="text-[10px] font-mono text-slate-400 mt-0.5">
-                        Tinggi Regional
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Secondary Metrics List */}
-                  <div className="space-y-2.5 text-xs font-mono">
-                    <div className="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/80">
-                      <span className="text-slate-400 flex items-center gap-1.5">
-                        <Eye className="w-3.5 h-3.5 text-red-400" />
-                        Jangkauan Rata-rata:
-                      </span>
-                      <span className="font-bold text-white">{plat.reachRange}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/80">
-                      <span className="text-slate-400 flex items-center gap-1.5">
-                        <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
-                        Impresi Bulanan:
-                      </span>
-                      <span className="font-bold text-emerald-300">{plat.monthlyMetric}</span>
-                    </div>
-
-                    <div className="flex flex-col p-2 rounded-lg bg-slate-900/60 border border-slate-800/80">
-                      <span className="text-slate-400 text-[10px] uppercase">
-                        {plat.secondaryMetricLabel}
-                      </span>
-                      <span className="font-bold text-amber-300 text-xs mt-0.5">
-                        {plat.secondaryMetricValue}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Visit Official Account Link */}
-                <div className="mt-6 pt-4 border-t border-slate-800">
                   <a
                     href={plat.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-bold text-xs uppercase tracking-wider transition-all border border-slate-700"
+                    className="w-10 h-10 rounded-xl bg-paper hover:bg-mustard border-2 border-ink flex items-center justify-center text-ink transition-colors shadow-neo-sm shrink-0"
+                    title={`Kunjungi profil ${plat.name}`}
                   >
-                    <span>Kunjungi Akun Resmi</span>
-                    <ExternalLink className="w-3.5 h-3.5 text-amber-400" />
+                    <ExternalLink className="w-4 h-4" />
                   </a>
                 </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+
+                <p className="text-xs text-ink/80 leading-relaxed mb-6 font-normal">
+                  {plat.description}
+                </p>
+
+                {/* Key Numbers Grid */}
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  {/* Followers */}
+                  <div className="p-3 rounded-xl bg-paper border-2 border-ink">
+                    <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase text-ink/70 mb-1">
+                      <Users className="w-3.5 h-3.5 text-ink" />
+                      <span>Followers</span>
+                    </div>
+                    <div className="text-lg font-mono font-black text-ink">
+                      {plat.followersFormatted}
+                    </div>
+                  </div>
+
+                  {/* ER */}
+                  <div className="p-3 rounded-xl bg-mint/40 border-2 border-ink">
+                    <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase text-ink/70 mb-1">
+                      <TrendingUp className="w-3.5 h-3.5 text-ink" />
+                      <span>Avg. ER</span>
+                    </div>
+                    <div className="text-lg font-mono font-black text-ink">
+                      {plat.er}%
+                    </div>
+                  </div>
+                </div>
+
+                {/* Performance Metric List */}
+                <div className="space-y-2 mb-4 text-xs font-mono">
+                  <div className="flex items-center justify-between p-2.5 rounded-lg bg-paper border border-ink/20">
+                    <span className="text-ink/70">Jangkauan / Post:</span>
+                    <span className="font-bold text-ink">{plat.reachRange}</span>
+                  </div>
+                  <div className="flex items-center justify-between p-2.5 rounded-lg bg-paper border border-ink/20">
+                    <span className="text-ink/70">Jangkauan Bulanan:</span>
+                    <span className="font-bold text-ink">{plat.monthlyMetric}</span>
+                  </div>
+                  <div className="flex items-center justify-between p-2.5 rounded-lg bg-paper border border-ink/20">
+                    <span className="text-ink/70">{plat.secondaryMetricLabel}:</span>
+                    <span className="font-bold text-ink">{plat.secondaryMetricValue}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Link Button */}
+              <a
+                href={plat.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="neo-button w-full min-h-[44px] py-2.5 px-4 rounded-xl bg-white hover:bg-mustard text-ink text-xs font-mono font-bold flex items-center justify-center gap-2 border-2 border-ink shadow-neo-sm mt-2"
+              >
+                <span>Kunjungi Akun Resmi</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
+
+      {/* Audience Demographics Summary Widget */}
+      <div className="neo-card bg-white rounded-2xl border-2 border-ink shadow-neo p-6 sm:p-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b-2 border-ink/10">
+          <div>
+            <span className="neo-badge bg-mustard text-ink text-xs mb-1 inline-block">
+              Demografi Terdistribusi
+            </span>
+            <h3 className="text-xl sm:text-2xl font-black text-ink tracking-tight font-sans">
+              Profil & Persebaran Audiens Sumbar Terkini
+            </h3>
+          </div>
+          <div className="text-xs font-mono text-ink/70">
+            Berbasis data gabungan 330.200+ followers
+          </div>
         </div>
 
-        {/* Audience Demographics Summary Widget (Section 2.4 in prompt) */}
-        <div className="mt-12 bg-slate-950 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-slate-800">
-            <div>
-              <span className="text-xs font-mono font-bold text-red-400 uppercase tracking-wider block">
-                Audience Profiling
-              </span>
-              <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                Ringkasan Demografi Audiens Sumbar Terkini
-              </h3>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full bg-slate-800 text-xs font-mono font-bold text-slate-300 border border-slate-700">
-                Audience Lintas Usia & Wilayah
-              </span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Location Breakdown */}
+          <div>
+            <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-ink/70 mb-3 flex items-center gap-1.5">
+              <MapPin className="w-4 h-4 text-ink" />
+              <span>Persebaran Lokasi Utama:</span>
+            </h4>
+            <div className="space-y-3">
+              {demographics.locations.map((loc) => (
+                <div key={loc.name}>
+                  <div className="flex justify-between text-xs font-mono mb-1">
+                    <span className="font-bold text-ink">{loc.name}</span>
+                    <span className="font-black text-ink">{loc.percentage}%</span>
+                  </div>
+                  <div className="w-full h-3 rounded-full bg-paper border-2 border-ink overflow-hidden">
+                    <div
+                      className="h-full bg-mustard"
+                      style={{ width: `${loc.percentage}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
-            {/* Demographics by Location */}
-            <div>
-              <div className="flex items-center gap-2 mb-3">
-                <MapPin className="w-4 h-4 text-red-400" />
-                <h4 className="font-bold text-sm text-white uppercase tracking-wider">
-                  Distribusi Wilayah & Geografis
-                </h4>
-              </div>
-
-              <div className="space-y-3.5">
-                {demographics.locations.map((loc, idx) => (
-                  <div key={idx} className="space-y-1">
-                    <div className="flex items-center justify-between text-xs font-mono">
-                      <span className="text-slate-300 font-medium">{loc.name}</span>
-                      <span className="text-amber-300 font-bold">{loc.percentage}%</span>
-                    </div>
-                    <div className="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
-                      <div
-                        className="h-full rounded-full transition-all duration-700"
-                        style={{
-                          width: `${loc.percentage}%`,
-                          backgroundColor: loc.color,
-                        }}
-                      />
-                    </div>
+          {/* Age Distribution Breakdown */}
+          <div>
+            <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-ink/70 mb-3 flex items-center gap-1.5">
+              <Calendar className="w-4 h-4 text-ink" />
+              <span>Rentang Usia Dominan (18-44 Tahun = 90%):</span>
+            </h4>
+            <div className="space-y-3">
+              {demographics.ageGroups.map((age) => (
+                <div key={age.range}>
+                  <div className="flex justify-between text-xs font-mono mb-1">
+                    <span className="font-bold text-ink">Usia {age.range} Tahun</span>
+                    <span className="font-black text-ink">{age.percentage}%</span>
                   </div>
-                ))}
-              </div>
-              <p className="text-[11px] font-mono text-slate-400 mt-3">
-                *Sangat dominan di pusat kota & nagari Sumatera Barat serta komunitas perantau Minang di Jabodetabek & Riau.
-              </p>
-            </div>
-
-            {/* Demographics by Age */}
-            <div>
-              <div className="flex items-center gap-2 mb-3">
-                <Calendar className="w-4 h-4 text-amber-400" />
-                <h4 className="font-bold text-sm text-white uppercase tracking-wider">
-                  Rentang Usia Audiens Aktif
-                </h4>
-              </div>
-
-              <div className="space-y-3.5">
-                {demographics.ageGroups.map((age, idx) => (
-                  <div key={idx} className="space-y-1">
-                    <div className="flex items-center justify-between text-xs font-mono">
-                      <span className="text-slate-300 font-medium">Usia {age.range}</span>
-                      <span className="text-emerald-400 font-bold">{age.percentage}%</span>
-                    </div>
-                    <div className="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
-                      <div
-                        className="h-full rounded-full transition-all duration-700"
-                        style={{
-                          width: `${age.percentage}%`,
-                          backgroundColor: age.color,
-                        }}
-                      />
-                    </div>
+                  <div className="w-full h-3 rounded-full bg-paper border-2 border-ink overflow-hidden">
+                    <div
+                      className="h-full bg-mint"
+                      style={{ width: `${age.percentage}%` }}
+                    />
                   </div>
-                ))}
-              </div>
-              <p className="text-[11px] font-mono text-slate-400 mt-3">
-                *Sebanyak 65% audiens berada pada usia produktif (25-44 tahun) dengan daya beli mandiri dan keputusan konsumsi tinggi.
-              </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -288,4 +266,3 @@ export function PlatformAnalyticsSection() {
     </section>
   );
 }
-

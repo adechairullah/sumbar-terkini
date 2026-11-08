@@ -2,114 +2,136 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { MEDIA_KIT_DATA } from '@/data/mediaKitData';
+import { MEDIA_KIT_DATA, PortfolioMockup } from '@/data/mediaKitData';
 import {
   Heart,
+  MessageCircle,
   Share2,
   Bookmark,
-  MessageCircle,
-  Eye,
+  Sparkles,
+  ExternalLink,
   CheckCircle2,
-  TrendingUp,
 } from 'lucide-react';
 
 export function PortfolioShowcaseSection() {
-  const { portfolio } = MEDIA_KIT_DATA;
+  const portfolioMockups: PortfolioMockup[] = MEDIA_KIT_DATA.portfolio;
 
   return (
-    <section id="portfolio-showcase" className="py-14 sm:py-20 bg-slate-900 text-white border-b border-slate-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <span className="text-xs font-mono font-bold text-red-400 uppercase tracking-widest block mb-2">
-            Bukti Nyata Efektivitas Kampanye
-          </span>
-          <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight font-sans">
-            Portofolio Kolaborasi & Paid Promote
+    <section id="portfolio-showcase" className="my-12 sm:my-16" aria-labelledby="portfolio-heading">
+      {/* Section Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <div className="inline-flex items-center gap-1.5 neo-badge bg-mint text-ink text-xs mb-2">
+            <Sparkles className="w-3.5 h-3.5 text-ink" />
+            <span>Portofolio & Kolaborasi Sukses</span>
+          </div>
+          <h2 id="portfolio-heading" className="text-3xl sm:text-4xl font-black text-ink tracking-tight font-sans">
+            Portofolio Kolaborasi & Endorsement
           </h2>
-          <p className="text-sm sm:text-base text-slate-300 mt-2.5 leading-relaxed">
-            Contoh hasil kolaborasi konten berita dan promosi kreatif yang sukses menjangkau puluhan hingga ratusan ribu audiens Sumatera Barat.
+          <p className="text-sm sm:text-base text-ink/80 mt-1 max-w-2xl font-normal">
+            Contoh hasil kolaborasi nyata Sumbar Terkini bersama brand lokal, nasional, dan instansi publik dengan jangkauan viral organik.
           </p>
         </div>
 
-        {/* 4 Instagram-Style Collaboration Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {portfolio.map((item) => (
-            <div
-              key={item.id}
-              className="bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shadow-xl hover:border-slate-700 transition-all flex flex-col justify-between group"
-            >
-              <div>
-                {/* Header: Sumbar Terkini Collab Bar */}
-                <div className="p-3 bg-slate-900 border-b border-slate-800/80 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-full bg-red-700 flex items-center justify-center text-[10px] font-black text-white">
-                      ST
-                    </div>
-                    <div className="leading-tight">
-                      <div className="text-xs font-bold text-white flex items-center gap-1">
-                        <span>sumbarterkini_id</span>
-                        <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
-                      </div>
-                      <span className="text-[10px] font-mono text-slate-400">{item.brandTag}</span>
-                    </div>
-                  </div>
-                  <span className="text-[10px] font-mono text-amber-300 bg-amber-950/70 border border-amber-800/60 px-1.5 py-0.5 rounded">
-                    Collab
-                  </span>
-                </div>
+        <a
+          href="https://www.instagram.com/sumbarterkini_id/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="neo-button min-h-[44px] px-4 py-2 bg-white hover:bg-mustard text-ink text-xs font-mono font-bold rounded-xl border-2 border-ink shadow-neo-sm flex items-center gap-2 self-start md:self-auto"
+        >
+          <span>Lihat Feed Instagram</span>
+          <ExternalLink className="w-3.5 h-3.5" />
+        </a>
+      </div>
 
-                {/* Media Image Showcase */}
-                <div className="relative aspect-square w-full bg-slate-800 overflow-hidden">
-                  <Image
-                    src={item.imageUrl}
-                    alt={item.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    unoptimized
-                  />
-                  {/* Floating Overlay Badge */}
-                  <div className="absolute top-2.5 left-2.5">
-                    <span className="px-2 py-1 rounded bg-slate-950/80 backdrop-blur text-[10px] font-mono font-bold text-white border border-slate-700/80">
-                      {item.format}
+      {/* 4 Mockup Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {portfolioMockups.map((item: PortfolioMockup) => (
+          <div
+            key={item.id}
+            className="neo-card bg-white rounded-2xl border-2 border-ink shadow-neo overflow-hidden flex flex-col justify-between hover:translate-y-[-2px] transition-transform"
+          >
+            <div>
+              {/* Instagram-Style Header */}
+              <div className="p-3.5 flex items-center justify-between border-b-2 border-ink bg-paper">
+                <div className="flex items-center gap-2.5">
+                  <div className="relative w-8 h-8 rounded-full border-2 border-ink overflow-hidden bg-white shrink-0">
+                    <Image
+                      src="/logo-sumbar-terkini.png"
+                      alt="Sumbar Terkini"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1">
+                      <span className="font-bold text-xs text-ink font-mono">
+                        sumbarterkini_id
+                      </span>
+                      <CheckCircle2 className="w-3 h-3 text-mint fill-mint/30 stroke-ink" />
+                    </div>
+                    <span className="text-[10px] text-ink/60 font-mono block">
+                      {item.brandTag}
                     </span>
                   </div>
-
-                  {/* Reach/View Meter Overlay */}
-                  <div className="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded bg-slate-950/85 backdrop-blur border border-slate-700/80 flex items-center gap-1.5 text-xs font-mono font-bold text-amber-300">
-                    <Eye className="w-3.5 h-3.5 text-amber-400" />
-                    <span>{item.viewsOrReach} {item.viewsOrReachLabel}</span>
-                  </div>
                 </div>
 
-                {/* Content Info */}
-                <div className="p-4">
-                  <span className="text-[10px] font-mono font-bold text-red-400 uppercase tracking-wider block mb-1">
-                    {item.category}
+                <span className="text-[10px] font-mono font-bold text-ink bg-white border border-ink px-1.5 py-0.5 rounded">
+                  {item.platformBadge}
+                </span>
+              </div>
+
+              {/* Mockup Thumbnail */}
+              <div className="relative aspect-[4/3] w-full bg-paper border-b-2 border-ink overflow-hidden group">
+                <Image
+                  src={item.imageUrl}
+                  alt={item.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute top-2 left-2">
+                  <span className="neo-badge bg-mustard text-ink text-[10px] font-mono">
+                    {item.format}
                   </span>
-                  <h3 className="font-bold text-sm text-white leading-snug line-clamp-2">
-                    {item.title}
-                  </h3>
                 </div>
               </div>
 
-              {/* Instagram Interaction Bar Footer */}
-              <div className="px-4 py-3 bg-slate-900 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono">
-                <div className="flex items-center gap-1.5 text-red-400">
-                  <Heart className="w-4 h-4 fill-red-500 text-red-500" />
-                  <span className="font-bold text-slate-200">{item.likes}</span>
+              {/* Instagram Action Icons Row */}
+              <div className="p-3 flex items-center justify-between border-b border-ink/10">
+                <div className="flex items-center gap-3 text-ink">
+                  <Heart className="w-4 h-4 fill-coral text-coral" />
+                  <MessageCircle className="w-4 h-4" />
+                  <Share2 className="w-4 h-4" />
+                </div>
+                <Bookmark className="w-4 h-4 text-ink" />
+              </div>
+
+              {/* Post Content & Realistic Metrics */}
+              <div className="p-4 space-y-2">
+                <div className="text-xs font-mono font-bold text-ink flex items-center justify-between">
+                  <span>{item.viewsOrReachLabel}:</span>
+                  <span className="text-sm font-black text-ink">{item.viewsOrReach}</span>
                 </div>
 
-                <div className="flex items-center gap-1 text-slate-300">
-                  <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
-                  <span className="font-bold">{item.secondaryStat}</span>
+                <div className="flex items-center justify-between text-[11px] font-mono text-ink/70">
+                  <span>Likes: {item.likes}</span>
+                  <span>{item.secondaryStatLabel}: {item.secondaryStat}</span>
                 </div>
+
+                <h3 className="text-xs font-bold text-ink font-sans pt-1 leading-snug line-clamp-2">
+                  {item.title}
+                </h3>
               </div>
             </div>
-          ))}
-        </div>
+
+            <div className="p-3 pt-0">
+              <span className="text-[10px] font-mono text-ink/60 block text-center">
+                Terverifikasi Organik Minangkabau
+              </span>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
 }
-

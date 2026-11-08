@@ -13,7 +13,6 @@ import {
   FileText,
   CheckCircle2,
   AlertCircle,
-  Eye,
   Sparkles,
 } from 'lucide-react';
 
@@ -60,7 +59,7 @@ export function OrderCalculatorSection({
   const handleDateChange = (val: string) => {
     setScheduleDate(val);
     if (!val) {
-      setDateError('Tanggal tayang wajib diisi (H-1 sebelum penayangan).');
+      setDateError('Tanggal tayang wajib diisi (minimal H-1 sebelum tayang).');
       return;
     }
     const chosen = new Date(val);
@@ -69,7 +68,7 @@ export function OrderCalculatorSection({
 
     const diffDays = (chosen.getTime() - today.getTime()) / (1000 * 3600 * 24);
     if (diffDays < 1) {
-      setDateError('Sesuai ketentuan, materi wajib dikirim dan dijadwalkan minimal H-1 sebelum tayang.');
+      setDateError('Sesuai ketentuan resmi, materi wajib dikirim dan dijadwalkan minimal H-1 sebelum tayang.');
     } else {
       setDateError('');
     }
@@ -98,55 +97,49 @@ export function OrderCalculatorSection({
     if (selectedSinglePlatform === 'TikTok') {
       return '45.000 - 500.000+ views (Algoritma FYP)';
     }
-    return '65.000 - 350.000+ akun Facebook';
+    return '65.000 - 350.000+ akun (Demografi Kuat 25-54 Th)';
   }, [activePackage, selectedSinglePlatform]);
 
-  // WhatsApp formatted string
+  // Format WhatsApp Message
   const whatsappUrl = useMemo(() => {
-    const bName = brandName.trim() || '[Nama Brand/Instansi]';
-    const sDate = scheduleDate || '[Belum ditentukan]';
+    const bName = brandName.trim() || '[Nama Brand Belum Diisi]';
+    const sDate = scheduleDate || '[Belum Ditentukan, Mohon Rekomendasi Slot]';
     const platformDisplay =
       activePackage.platformsSupported === 'all'
-        ? 'Mirroring 3 Platform (Instagram + TikTok + Facebook)'
+        ? 'Semua Platform (Instagram, TikTok, Facebook)'
         : selectedSinglePlatform;
 
-    const extraText =
-      extraStories > 0
-        ? `${extraStories}x Extra Story (+Rp${(extraStories * extraStoryPrice).toLocaleString('id-ID')})`
-        : 'Tidak ada';
+    const message = `Halo Admin Sumbar Terkini, saya ingin pasang iklan:
 
-    const message = `Halo Tim Redaksi & Iklan Sumbar Terkini! 👋
-Saya ingin memesan slot promosi berbayar (Paid Promote) dengan rincian berikut:
+- Nama Brand: ${bName}
+- Paket Dipilih: ${activePackage.name} (${activePackage.priceFormatted})
+- Platform Target: ${platformDisplay}
+- Tambahan Opsi Story: ${extraStories > 0 ? `${extraStories}x (+Rp${(extraStories * extraStoryPrice).toLocaleString('id-ID')})` : 'Tidak Ada'}
+- Rencana Tanggal Tayang: ${sDate}
+- Estimasi Total Biaya: Rp${totalPrice.toLocaleString('id-ID')}
+- Catatan Tambahan: ${notes.trim() || '-'}
 
-• Brand / Instansi: ${bName}
-• Paket Pilihan: ${activePackage.name} (Rp${activePackage.price.toLocaleString('id-ID')})
-• Platform Target: ${platformDisplay}
-• Tambahan Story: ${extraText}
-• Tanggal Rencana Tayang: ${sDate}
-• Estimasi Total Biaya: Rp${totalPrice.toLocaleString('id-ID')}
-• Catatan Tambahan: ${notes.trim() || '-'}
-
-Mohon konfirmasi ketersediaan slot jadwal penayangan dan rekening pembayaran resmi. Terima kasih!`;
+Mohon konfirmasi ketersediaan slot tayang dan nomor rekening resmi. Terima kasih!`;
 
     return `https://wa.me/${brand.whatsappNumber}?text=${encodeURIComponent(message)}`;
-  }, [brandName, scheduleDate, activePackage, selectedSinglePlatform, extraStories, totalPrice, notes, brand.whatsappNumber]);
+  }, [brandName, activePackage, selectedSinglePlatform, extraStories, scheduleDate, totalPrice, notes, brand.whatsappNumber]);
 
-  // Email draft URL
-  const emailDraftUrl = useMemo(() => {
-    const bName = brandName.trim() || 'Klien Promosi';
-    const sDate = scheduleDate || '[Tanggal Belum Dipilih]';
+  // Format Email mailto link
+  const emailMailtoUrl = useMemo(() => {
+    const bName = brandName.trim() || 'Brand Partner';
+    const sDate = scheduleDate || 'Segera (H-1)';
     const platformDisplay =
       activePackage.platformsSupported === 'all'
-        ? 'Mirroring 3 Platform (Instagram + TikTok + Facebook)'
+        ? 'Mirroring 3 Platform (IG, TikTok, FB)'
         : selectedSinglePlatform;
 
-    const subject = `[Order Paid Promote] ${activePackage.name} - ${bName}`;
-    const body = `Halo Tim Sumbar Terkini,
+    const subject = `[Order Iklan] ${bName} - ${activePackage.name}`;
+    const body = `Halo Tim Kemitraan Sumbar Terkini,
 
-Berikut draft pesanan paid promote kami:
+Berikut adalah draf pemesanan iklan promosi kami:
 
 Nama Brand / Instansi: ${bName}
-Paket: ${activePackage.name}
+Paket Pilihan: ${activePackage.name}
 Platform: ${platformDisplay}
 Tambahan Story: ${extraStories} story
 Rencana Tanggal Tayang: ${sDate}
@@ -161,29 +154,29 @@ Terima kasih.`;
   }, [brandName, activePackage, selectedSinglePlatform, extraStories, scheduleDate, totalPrice, notes, brand.email]);
 
   return (
-    <section id="pricing-calculator" className="py-14 sm:py-20 bg-slate-900 text-white border-b border-slate-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Heading */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-950/80 border border-red-800/60 text-xs font-mono font-bold text-amber-300 uppercase tracking-wider mb-2">
-            <Calculator className="w-3.5 h-3.5" />
-            <span>Kalkulator Estimasi & Pemesanan Instan</span>
+    <section id="order-calculator-widget" className="my-12 sm:my-16" aria-labelledby="calc-widget-heading">
+      <div className="neo-card bg-white rounded-2xl sm:rounded-3xl border-2 sm:border-3 border-ink shadow-neo-lg p-6 sm:p-10">
+        {/* Section Heading */}
+        <div className="text-center max-w-3xl mx-auto mb-10">
+          <div className="inline-flex items-center gap-1.5 neo-badge bg-mustard text-ink text-xs mb-2">
+            <Calculator className="w-3.5 h-3.5 text-ink" />
+            <span>Widget Interaktif Pemesanan</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight font-sans">
-            Hitung Biaya & Pesan Slot Iklan
+          <h2 id="calc-widget-heading" className="text-3xl sm:text-4xl font-black text-ink tracking-tight font-sans">
+            Kalkulator Order & Generator WhatsApp
           </h2>
-          <p className="text-sm sm:text-base text-slate-300 mt-2 leading-relaxed">
-            Pilih paket, sesuaikan platform, tambahkan opsi story, dan kirimkan pesanan Anda secara otomatis langsung ke WhatsApp resmi Sumbar Terkini.
+          <p className="text-sm sm:text-base text-ink/80 mt-1 leading-relaxed font-normal">
+            Pilih paket, sesuaikan platform target, tambahkan opsi story, dan klik tombol untuk mengirim format order otomatis langsung ke WhatsApp resmi Sumbar Terkini.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Form: Inputs & Configuration */}
-          <div className="lg:col-span-7 bg-slate-950 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6">
+          <div className="lg:col-span-7 bg-paper border-2 border-ink rounded-2xl p-6 sm:p-8 shadow-neo space-y-6">
             {/* Step 1: Select Package */}
             <div>
-              <label className="block text-xs font-mono font-bold text-slate-300 uppercase tracking-wider mb-2.5">
-                1. Pilih Paket Promosi *
+              <label className="block text-xs font-mono font-bold text-ink uppercase tracking-wider mb-2.5">
+                1. Pilih Paket Promosi:
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {packages.map((pkg) => (
@@ -194,21 +187,21 @@ Terima kasih.`;
                       setPackageId(pkg.id);
                       onSelectPackage?.(pkg.id);
                     }}
-                    className={`p-3.5 rounded-xl border text-left transition-all ${
+                    className={`min-h-[44px] p-3.5 rounded-xl border-2 text-left transition-all ${
                       packageId === pkg.id
-                        ? 'bg-red-950/70 border-red-500 shadow-md ring-1 ring-red-500/50'
-                        : 'bg-slate-900 border-slate-800 hover:border-slate-700 text-slate-300'
+                        ? 'bg-mustard border-ink shadow-neo-sm font-bold'
+                        : 'bg-white border-ink/40 hover:border-ink text-ink'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">
-                      <span className="font-bold text-sm text-white">{pkg.name}</span>
+                      <span className="font-bold text-xs text-ink">{pkg.name}</span>
                       {pkg.badge && (
-                        <span className="text-[10px] font-mono font-bold text-amber-300 bg-amber-950/80 px-1.5 py-0.5 rounded">
+                        <span className="text-[10px] font-mono font-bold text-ink bg-white border border-ink px-1.5 py-0.5 rounded">
                           {pkg.badge}
                         </span>
                       )}
                     </div>
-                    <div className="text-sm font-mono font-black text-amber-400">
+                    <div className="text-sm font-mono font-black text-ink">
                       {pkg.priceFormatted}
                     </div>
                   </button>
@@ -218,8 +211,8 @@ Terima kasih.`;
 
             {/* Step 2: Single Platform Selector (Conditional) */}
             {activePackage.platformsSupported === 'single' ? (
-              <div className="p-4 rounded-xl bg-slate-900 border border-slate-800">
-                <label className="block text-xs font-mono font-bold text-slate-300 uppercase tracking-wider mb-2">
+              <div className="p-4 rounded-xl bg-white border-2 border-ink">
+                <label className="block text-xs font-mono font-bold text-ink uppercase tracking-wider mb-2">
                   2. Pilih 1 Platform Penayangan Target:
                 </label>
                 <div className="grid grid-cols-3 gap-2">
@@ -228,10 +221,10 @@ Terima kasih.`;
                       key={plat}
                       type="button"
                       onClick={() => setSelectedSinglePlatform(plat)}
-                      className={`py-2 px-3 rounded-lg text-xs font-bold font-mono transition-all border ${
+                      className={`min-h-[44px] py-2 px-3 rounded-lg text-xs font-bold font-mono transition-all border-2 ${
                         selectedSinglePlatform === plat
-                          ? 'bg-red-700 text-white border-red-500 shadow-md'
-                          : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-white'
+                          ? 'bg-mint text-ink border-ink shadow-neo-sm'
+                          : 'bg-paper text-ink border-ink/30 hover:border-ink'
                       }`}
                     >
                       {plat}
@@ -240,38 +233,40 @@ Terima kasih.`;
                 </div>
               </div>
             ) : (
-              <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 text-xs font-mono text-emerald-400 flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 shrink-0" />
-                <span>Paket ini otomatis Mirroring tayang di 3 platform sekaligus (IG + TikTok + FB).</span>
+              <div className="p-3.5 rounded-xl bg-mint/40 border-2 border-ink text-xs font-mono text-ink flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-ink shrink-0" />
+                <span>Paket ini otomatis Mirroring tayang di 3 platform sekaligus (IG, TikTok, FB).</span>
               </div>
             )}
 
             {/* Step 3: Add-on Counter */}
-            <div className="flex items-center justify-between p-4 rounded-xl bg-slate-900 border border-slate-800">
+            <div className="flex items-center justify-between p-4 rounded-xl bg-white border-2 border-ink">
               <div>
-                <div className="text-sm font-bold text-white">Tambahan Instagram Story</div>
-                <div className="text-xs font-mono text-slate-400 mt-0.5">
-                  +Rp50.000 per 1 tayangan story aktif 24 jam dengan link sticker
-                </div>
+                <span className="block text-xs font-mono font-bold text-ink uppercase tracking-wider">
+                  3. Tambahan Instagram Story
+                </span>
+                <span className="text-xs text-ink/70">
+                  +Rp50.000 / story (Aktif 24 jam dengan link)
+                </span>
               </div>
 
               <div className="flex items-center gap-3">
                 <button
                   type="button"
-                  onClick={() => setExtraStories(Math.max(0, extraStories - 1))}
+                  onClick={() => setExtraStories((prev) => Math.max(0, prev - 1))}
                   disabled={extraStories === 0}
-                  className="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-white disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-700"
+                  className="w-10 h-10 rounded-lg bg-paper border-2 border-ink flex items-center justify-center text-ink disabled:opacity-40 disabled:cursor-not-allowed hover:bg-mustard shadow-neo-sm transition-colors"
                   aria-label="Kurangi Story"
                 >
                   <Minus className="w-4 h-4" />
                 </button>
-                <span className="w-8 text-center font-mono font-black text-base text-amber-300">
+                <span className="w-8 text-center font-mono font-black text-base text-ink">
                   {extraStories}
                 </span>
                 <button
                   type="button"
-                  onClick={() => setExtraStories(extraStories + 1)}
-                  className="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-white hover:bg-slate-700"
+                  onClick={() => setExtraStories((prev) => prev + 1)}
+                  className="w-10 h-10 rounded-lg bg-paper border-2 border-ink flex items-center justify-center text-ink hover:bg-mustard shadow-neo-sm transition-colors"
                   aria-label="Tambah Story"
                 >
                   <Plus className="w-4 h-4" />
@@ -280,147 +275,150 @@ Terima kasih.`;
             </div>
 
             {/* Step 4: Brand Name, Date & Notes */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-4">
               <div>
-                <label className="block text-xs font-mono font-bold text-slate-300 uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                  <Building className="w-3.5 h-3.5 text-red-400" />
-                  <span>Nama Brand / Instansi</span>
+                <label className="block text-xs font-mono font-bold text-ink uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                  <Building className="w-3.5 h-3.5 text-ink" />
+                  <span>Nama Brand / Instansi / Toko:</span>
                 </label>
                 <input
                   type="text"
+                  placeholder="Contoh: Kopi Ranah Minang, Padang"
                   value={brandName}
                   onChange={(e) => setBrandName(e.target.value)}
-                  placeholder="Contoh: Kopi Janji Minang"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white font-sans text-xs focus:outline-none focus:border-red-500"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white border-2 border-ink text-ink text-sm font-sans placeholder:text-ink/40 focus:outline-none focus:ring-2 focus:ring-ink min-h-[44px]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-mono font-bold text-slate-300 uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                  <Calendar className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Rencana Tanggal Tayang (Min. H-1) *</span>
+                <label className="block text-xs font-mono font-bold text-ink uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-ink" />
+                  <span>Rencana Tanggal Tayang (Aturan Minimal H-1):</span>
                 </label>
                 <input
                   type="date"
                   min={tomorrowStr}
                   value={scheduleDate}
                   onChange={(e) => handleDateChange(e.target.value)}
-                  className={`w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border text-white font-mono text-xs focus:outline-none ${
-                    dateError ? 'border-red-500' : 'border-slate-800 focus:border-red-500'
-                  }`}
+                  className="w-full px-4 py-2.5 rounded-xl bg-white border-2 border-ink text-ink text-sm font-mono focus:outline-none focus:ring-2 focus:ring-ink min-h-[44px]"
                 />
                 {dateError && (
-                  <p className="text-[11px] font-mono text-red-400 mt-1 flex items-center gap-1">
-                    <AlertCircle className="w-3 h-3 shrink-0" />
+                  <p className="mt-1.5 text-xs text-coral font-bold flex items-center gap-1">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                     <span>{dateError}</span>
                   </p>
                 )}
               </div>
-            </div>
 
-            <div>
-              <label className="block text-xs font-mono font-bold text-slate-300 uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                <FileText className="w-3.5 h-3.5 text-slate-400" />
-                <span>Catatan Singkat / Pesan Tambahan</span>
-              </label>
-              <textarea
-                rows={2}
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                placeholder="Tuliskan materi promosi, link akun, atau jam tayang prioritas..."
-                className="w-full p-3 rounded-xl bg-slate-900 border border-slate-800 text-white font-sans text-xs focus:outline-none focus:border-red-500 resize-none"
-              />
+              <div>
+                <label className="block text-xs font-mono font-bold text-ink uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                  <FileText className="w-3.5 h-3.5 text-ink" />
+                  <span>Catatan Khusus / Deskripsi Singkat:</span>
+                </label>
+                <textarea
+                  rows={2}
+                  placeholder="Contoh: Lampiran link Google Drive materi video, mohon tayang jam 19.00 WIB."
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl bg-white border-2 border-ink text-ink text-sm font-sans placeholder:text-ink/40 focus:outline-none focus:ring-2 focus:ring-ink"
+                />
+              </div>
             </div>
           </div>
 
-          {/* Right Summary: Live Total & Instant Order Buttons */}
-          <div className="lg:col-span-5 bg-gradient-to-b from-slate-950 to-slate-900 border-2 border-slate-800 rounded-2xl p-6 sm:p-7 shadow-2xl relative sticky top-24">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-800">
-              <h3 className="text-base font-black text-white uppercase tracking-wider font-sans">
-                Ringkasan Order Iklan
-              </h3>
-              <span className="text-[10px] font-mono text-amber-400 bg-amber-950 px-2 py-0.5 rounded border border-amber-800">
-                Live Calculator
+          {/* Right Column: Live Order Summary & WhatsApp Action */}
+          <div className="lg:col-span-5 bg-mustard rounded-2xl border-2 border-ink shadow-neo p-6 sm:p-8 space-y-6 lg:sticky lg:top-24">
+            <div className="border-b-2 border-ink/20 pb-4">
+              <span className="neo-badge bg-white text-ink text-[11px] font-mono mb-2 inline-block">
+                Ringkasan Pemesanan
               </span>
+              <h3 className="text-xl font-black text-ink font-sans">
+                Estimasi Biaya & Jangkauan
+              </h3>
             </div>
 
-            {/* Selected Package Breakdown */}
-            <div className="space-y-3 py-4 border-b border-slate-800 text-xs font-mono">
-              <div className="flex items-center justify-between text-slate-300">
-                <span>Paket:</span>
-                <span className="font-bold text-white">{activePackage.name}</span>
+            {/* Line Items */}
+            <div className="space-y-3 text-xs font-mono">
+              <div className="flex items-center justify-between pb-2 border-b border-ink/10">
+                <span className="text-ink/80">Paket Utama:</span>
+                <span className="font-bold text-ink text-right">{activePackage.name}</span>
               </div>
-
-              <div className="flex items-center justify-between text-slate-300">
-                <span>Platform:</span>
-                <span className="font-bold text-white">
+              <div className="flex items-center justify-between pb-2 border-b border-ink/10">
+                <span className="text-ink/80">Harga Dasar:</span>
+                <span className="font-bold text-ink">{activePackage.priceFormatted}</span>
+              </div>
+              <div className="flex items-center justify-between pb-2 border-b border-ink/10">
+                <span className="text-ink/80">Platform:</span>
+                <span className="font-bold text-ink text-right">
                   {activePackage.platformsSupported === 'all'
-                    ? '3 Platform (IG + TikTok + FB)'
+                    ? '3 Platform (IG, TikTok, FB)'
                     : selectedSinglePlatform}
                 </span>
               </div>
-
               {extraStories > 0 && (
-                <div className="flex items-center justify-between text-slate-300">
-                  <span>Extra Story ({extraStories}x):</span>
-                  <span className="font-bold text-amber-300">
+                <div className="flex items-center justify-between pb-2 border-b border-ink/10">
+                  <span className="text-ink/80">Extra Story ({extraStories}x):</span>
+                  <span className="font-bold text-ink">
                     +Rp{(extraStories * extraStoryPrice).toLocaleString('id-ID')}
                   </span>
                 </div>
               )}
-
-              <div className="flex items-center justify-between text-slate-300">
-                <span>Jadwal Tayang:</span>
-                <span className="font-bold text-emerald-400">
-                  {scheduleDate || 'Belum diisi'}
-                </span>
+              <div className="flex items-center justify-between pb-2 border-b border-ink/10">
+                <span className="text-ink/80">Rencana Tayang:</span>
+                <span className="font-bold text-ink">{scheduleDate || 'Belum diisi'}</span>
               </div>
             </div>
 
-            {/* Estimated Reach Output */}
-            <div className="my-4 p-3.5 rounded-xl bg-slate-900/90 border border-slate-800">
-              <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                <Eye className="w-3.5 h-3.5 text-amber-400" />
-                <span>Estimasi Jangkauan Audiens:</span>
+            {/* Estimated Reach Card */}
+            <div className="p-3.5 rounded-xl bg-white border-2 border-ink">
+              <div className="text-[10px] font-mono font-bold uppercase text-ink/70 mb-1 flex items-center gap-1">
+                <Sparkles className="w-3.5 h-3.5 text-ink" />
+                <span>Estimasi Potensi Jangkauan:</span>
               </div>
-              <div className="text-sm font-mono font-black text-amber-300 mt-1">
+              <div className="text-sm font-bold text-ink leading-snug">
                 {estimatedReach}
               </div>
             </div>
 
             {/* Total Price Display */}
-            <div className="pt-2 mb-6">
-              <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider block">
-                Total Biaya Penayangan:
-              </span>
-              <div className="text-3xl sm:text-4xl font-black font-mono text-white mt-1">
+            <div className="pt-2">
+              <div className="text-xs font-mono font-bold text-ink/70 uppercase">
+                Total Investasi Iklan:
+              </div>
+              <div className="text-3xl sm:text-4xl font-mono font-black text-ink mt-0.5">
                 Rp{totalPrice.toLocaleString('id-ID')}
               </div>
-              <p className="text-[11px] text-slate-400 mt-1">
-                *Sudah termasuk Collab Post & tag akun resmi tanpa biaya tersembunyi.
+              <p className="text-[11px] text-ink/70 mt-1 font-mono">
+                Bebas Collab Post tanpa biaya tambahan.
               </p>
             </div>
 
-            {/* Action Buttons: WhatsApp & Email */}
-            <div className="space-y-3">
+            {/* Primary Action Button: WhatsApp */}
+            <div className="space-y-3 pt-2">
               <a
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/60 transition-all border border-emerald-500"
+                className="neo-button w-full min-h-[48px] py-3.5 px-5 rounded-xl bg-mint hover:bg-mint-hover text-ink text-sm font-mono font-black flex items-center justify-center gap-2 border-2 border-ink shadow-neo"
               >
-                <MessageCircle className="w-4 h-4 fill-white" />
+                <MessageCircle className="w-5 h-5 text-ink" />
                 <span>Pesan via WhatsApp Sekarang</span>
               </a>
 
+              {/* Secondary Action: Email Draft */}
               <a
-                href={emailDraftUrl}
-                className="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-semibold text-xs tracking-wide flex items-center justify-center gap-2 border border-slate-700 transition-all"
+                href={emailMailtoUrl}
+                className="neo-button w-full min-h-[44px] py-2.5 px-4 rounded-xl bg-white hover:bg-paper text-ink text-xs font-mono font-bold flex items-center justify-center gap-2 border-2 border-ink shadow-neo-sm"
               >
-                <Mail className="w-3.5 h-3.5 text-slate-400" />
-                <span>Kirim Draft via Email</span>
+                <Mail className="w-4 h-4 text-ink" />
+                <span>Kirim Draft via Email Resmi</span>
               </a>
             </div>
+
+            {/* Mini Notice */}
+            <p className="text-[11px] text-center text-ink/70 font-mono">
+              Konfirmasi slot resmi via WhatsApp 0896-1766-2378
+            </p>
           </div>
         </div>
       </div>

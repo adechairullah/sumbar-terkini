@@ -18,7 +18,7 @@ const spaceMono = Space_Mono({
 export const metadata: Metadata = {
   title: 'Sumbar Terkini | Media Kit & Paid Promote Resmi 2026',
   description:
-    'Suara Terdepan Informasi, Politik & Berita Viral Sumatera Barat dan Nasional. Media kit resmi, tarif paid promote, analitik jangkauan 330.200+ followers aktif, dan pemesanan iklan online via WhatsApp.',
+    'Suara Terdepan Informasi, Politik & Berita Viral Sumatera Barat dan Nasional. Media kit resmi, tarif paid promote, analitik 330.200+ followers aktif, dan pemesanan online via WhatsApp.',
   keywords: [
     'Sumbar Terkini',
     'Media Kit Sumbar',
@@ -27,12 +27,25 @@ export const metadata: Metadata = {
     'Endorsement Minang',
     'Berita Viral Sumbar',
   ],
+  icons: {
+    icon: '/logo-sumbar-terkini.png',
+    shortcut: '/logo-sumbar-terkini.png',
+    apple: '/logo-sumbar-terkini.png',
+  },
   openGraph: {
     title: 'Sumbar Terkini | Media Kit & Paid Promote Resmi 2026',
     description:
       'Suara Terdepan Informasi, Politik & Berita Viral Sumatera Barat dan Nasional. Jangkauan 330.200+ Followers Aktif lintas Instagram, TikTok, dan Facebook.',
     type: 'website',
     locale: 'id_ID',
+    images: [
+      {
+        url: '/logo-sumbar-terkini.png',
+        width: 800,
+        height: 800,
+        alt: 'Sumbar Terkini Logo',
+      },
+    ],
   },
 };
 
@@ -43,7 +56,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id" className={`${plusJakarta.variable} ${spaceMono.variable} scroll-smooth`}>
-      <body className="font-sans antialiased bg-slate-950 text-slate-100 min-h-screen">
+      <body className="font-sans antialiased bg-paper text-ink min-h-screen selection:bg-mustard selection:text-ink">
         {children}
       </body>
     </html>

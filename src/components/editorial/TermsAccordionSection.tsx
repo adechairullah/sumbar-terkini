@@ -22,6 +22,19 @@ export function TermsAccordionSection() {
     );
   };
 
+  const getIconBg = (id: string) => {
+    switch (id) {
+      case 'tc-produk':
+        return 'bg-[#FFE4EA]';
+      case 'tc-materi':
+        return 'bg-[#D1FAE5]';
+      case 'tc-pembayaran':
+        return 'bg-[#FEF08A]';
+      default:
+        return 'bg-[#E0F2FE]';
+    }
+  };
+
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case 'ShieldAlert':
@@ -79,7 +92,7 @@ export function TermsAccordionSection() {
                 aria-expanded={isOpen}
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-paper border-2 border-ink flex items-center justify-center shrink-0">
+                  <div className={`w-10 h-10 rounded-xl border-2 border-ink shadow-neo-sm flex items-center justify-center shrink-0 ${getIconBg(item.id)}`}>
                     {getIcon(item.iconName)}
                   </div>
                   <div>

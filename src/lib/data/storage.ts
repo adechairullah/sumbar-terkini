@@ -72,7 +72,14 @@ export class LocalStorageManager {
       const storedPortfolio = localStorage.getItem(STORAGE_KEYS.PORTFOLIO_ITEMS);
 
       if (storedSettings) {
-        globalThis.__SUMBAR_LOCAL_STORE__.siteSettings = JSON.parse(storedSettings);
+        const parsed = JSON.parse(storedSettings);
+        if (parsed.business_email !== 'mrrobot4444@gmail.com') {
+          parsed.business_email = 'mrrobot4444@gmail.com';
+        }
+        if (parsed.whatsapp_number !== '6289617662378') {
+          parsed.whatsapp_number = '6289617662378';
+        }
+        globalThis.__SUMBAR_LOCAL_STORE__.siteSettings = parsed;
       }
       if (storedSocials) {
         globalThis.__SUMBAR_LOCAL_STORE__.socialPlatforms = JSON.parse(storedSocials);

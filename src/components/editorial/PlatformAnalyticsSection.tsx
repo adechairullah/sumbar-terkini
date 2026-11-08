@@ -96,6 +96,7 @@ export function PlatformAnalyticsSection() {
         return {
           icon: <InstagramIcon className="w-6 h-6 text-white" />,
           iconBg: 'bg-gradient-to-tr from-[#F58529] via-[#DD2A7B] to-[#8134AF]',
+          cardBg: 'bg-[#FFF5F8]',
           badgeBg: 'bg-[#FCE4EC] text-[#880E4F] border-[#E1306C]',
           cardBorderTop: '#E1306C',
           btnBg: 'bg-[#E1306C] hover:bg-[#C13584] text-white',
@@ -105,15 +106,17 @@ export function PlatformAnalyticsSection() {
         return {
           icon: <TikTokIcon className="w-6 h-6 text-white" />,
           iconBg: 'bg-[#000000]',
-          badgeBg: 'bg-paper text-ink border-ink',
+          cardBg: 'bg-[#F8FAFC]',
+          badgeBg: 'bg-white text-ink border-ink',
           cardBorderTop: '#00F2FE',
           btnBg: 'bg-ink hover:bg-ink/90 text-paper',
-          themeAccent: '#00F2FE',
+          themeAccent: '#111111',
         };
       case 'facebook':
         return {
           icon: <FacebookIcon className="w-6 h-6 text-white" />,
           iconBg: 'bg-[#1877F2]',
+          cardBg: 'bg-[#F0F7FF]',
           badgeBg: 'bg-[#E3F2FD] text-[#0D47A1] border-[#1877F2]',
           cardBorderTop: '#1877F2',
           btnBg: 'bg-[#1877F2] hover:bg-[#166FE5] text-white',
@@ -123,6 +126,7 @@ export function PlatformAnalyticsSection() {
         return {
           icon: <Users className="w-6 h-6 text-ink" />,
           iconBg: 'bg-mustard',
+          cardBg: 'bg-white',
           badgeBg: 'bg-paper text-ink border-ink',
           cardBorderTop: '#FFD166',
           btnBg: 'bg-white text-ink hover:bg-mustard',
@@ -210,7 +214,7 @@ export function PlatformAnalyticsSection() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.94 }}
                 transition={{ duration: 0.25 }}
-                className="neo-card bg-white rounded-2xl border-2 border-ink shadow-neo p-6 flex flex-col justify-between hover:translate-y-[-2px] transition-transform relative overflow-hidden"
+                className={`neo-card rounded-2xl border-2 border-ink shadow-neo p-6 flex flex-col justify-between hover:translate-y-[-2px] transition-transform relative overflow-hidden ${brandCfg.cardBg}`}
               >
                 {/* Platform Signature Top Color Bar */}
                 <div
@@ -322,7 +326,8 @@ export function PlatformAnalyticsSection() {
       </div>
 
       {/* Audience Demographics Summary Widget */}
-      <div className="neo-card bg-white rounded-2xl border-2 border-ink shadow-neo p-6 sm:p-8">
+      <div className="neo-card bg-white rounded-2xl border-2 border-ink shadow-neo p-6 sm:p-8 relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-2 bg-mustard" />
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b-2 border-ink/10">
           <div>
             <span className="neo-badge bg-mustard text-ink text-xs mb-1 inline-block">

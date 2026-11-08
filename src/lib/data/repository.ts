@@ -31,7 +31,10 @@ function normalizeSiteSettings(row: DbRow): SiteSettings {
     stickers: Array.isArray(row['stickers']) ? (row['stickers'] as SiteSettings['stickers']) : [],
     whatsapp_number: String(row['whatsapp_number'] ?? ''),
     whatsapp_template: String(row['whatsapp_template'] ?? ''),
-    business_email: String(row['business_email'] ?? ''),
+    business_email:
+      row['business_email'] && String(row['business_email']).includes('@') && !String(row['business_email']).includes('sumbarterkini')
+        ? String(row['business_email'])
+        : 'mrrobot4444@gmail.com',
     media_kit_pdf_url: String(row['media_kit_pdf_url'] ?? '/media-kit-sumbar-terkini.pdf'),
     creator_title: row['creator_title'] ? String(row['creator_title']) : undefined,
     portfolio_url: row['portfolio_url'] ? String(row['portfolio_url']) : undefined,

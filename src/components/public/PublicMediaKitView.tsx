@@ -142,8 +142,8 @@ export function PublicMediaKitView({
 
         {/* 7. Official Contact Hub with Instant PDF Download & Copy Buttons */}
         <ContactHub
-          email={settings?.business_email || 'mrrobot4444@gmail.com'}
-          whatsappNumber={settings?.whatsapp_number || '6289617662378'}
+          email="mrrobot4444@gmail.com"
+          whatsappNumber="6289617662378"
           mediaKitPdfUrl="/media-kit-sumbar-terkini.pdf"
         />
       </main>
